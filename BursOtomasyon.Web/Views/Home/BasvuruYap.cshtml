@@ -1,0 +1,946 @@
+@model BursOtomasyon.Web.Models.BasvuruViewModel
+@{
+    ViewData["Title"] = "Burs Başvuru Formu";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="tel"] {
+            letter-spacing: 0.5px;
+        }
+
+        input[type="tel"]:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .universite-dropdown-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .universite-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            margin-top: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+            z-index: 1000;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .universite-dropdown.show {
+            display: block;
+        }
+        
+        @@keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .universite-option {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        
+        .universite-option:last-child {
+            border-bottom: none;
+        }
+        
+        .universite-option:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .universite-option.highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .dropdown-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #667eea;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-toggle.rotated {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        
+        .universite-input-wrapper {
+            position: relative;
+        }
+        
+        .universite-input-wrapper input {
+            padding-right: 40px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .field-validation-error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Ana Sayfaya Dön</a>
+        <h1>🎓 Burs Başvuru Formu</h1>
+
+        @if (ViewBag.Success != null && ViewBag.Success)
+        {
+            <div class="alert alert-success">
+                <strong>Başarılı!</strong> @ViewBag.Message
+            </div>
+        }
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-error">
+                <strong>Hata!</strong> @ViewBag.Error
+            </div>
+        }
+
+        <form asp-action="BasvuruYap" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="Ad">Ad *</label>
+                    <input asp-for="Ad" required />
+                    <span asp-validation-for="Ad" class="field-validation-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Soyad">Soyad *</label>
+                    <input asp-for="Soyad" required />
+                    <span asp-validation-for="Soyad" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="TC">TC Kimlik No *</label>
+                    <input asp-for="TC" maxlength="11" required />
+                    <span asp-validation-for="TC" class="field-validation-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DogumTarihi">Doğum Tarihi *</label>
+                    <input asp-for="DogumTarihi" type="date" required />
+                    <span asp-validation-for="DogumTarihi" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="Telefon">Telefon</label>
+                    <input asp-for="Telefon" type="tel" id="telefonInput" placeholder="0 (5XX) XXX XX XX" pattern="[0-9\s\(\)\-]+" />
+                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Format: 0 (5XX) XXX XX XX</small>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email">E-Posta</label>
+                    <input asp-for="Email" type="email" />
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <label asp-for="Universite">Üniversite *</label>
+                <div class="universite-dropdown-container">
+                    <div class="universite-input-wrapper">
+                        <input asp-for="Universite" required autocomplete="off" id="universiteInput" />
+                        <span class="dropdown-toggle" id="dropdownToggle">▼</span>
+                    </div>
+                    <div class="universite-dropdown" id="universiteDropdown">
+                        @if (ViewBag.UniversiteListesi != null)
+                        {
+                            @foreach (var universite in (List<string>)ViewBag.UniversiteListesi)
+                            {
+                                <div class="universite-option" data-value="@universite">@universite</div>
+                            }
+                        }
+                    </div>
+                </div>
+                <span asp-validation-for="Universite" class="field-validation-error"></span>
+                <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Listeden seçebilir veya manuel olarak yazabilirsiniz.</small>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="Fakulte">Fakülte</label>
+                    <div class="universite-dropdown-container">
+                        <div class="universite-input-wrapper">
+                            <input asp-for="Fakulte" autocomplete="off" id="fakulteInput" />
+                            <span class="dropdown-toggle" id="fakulteDropdownToggle">▼</span>
+                        </div>
+                        <div class="universite-dropdown" id="fakulteDropdown">
+                            @if (ViewBag.FakulteListesi != null)
+                            {
+                                @foreach (var fakulte in (List<string>)ViewBag.FakulteListesi)
+                                {
+                                    <div class="universite-option" data-value="@fakulte">@fakulte</div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Listeden seçebilir veya manuel olarak yazabilirsiniz.</small>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Bolum">Bölüm *</label>
+                    <div class="universite-dropdown-container">
+                        <div class="universite-input-wrapper">
+                            <input asp-for="Bolum" required autocomplete="off" id="bolumInput" />
+                            <span class="dropdown-toggle" id="bolumDropdownToggle">▼</span>
+                        </div>
+                        <div class="universite-dropdown" id="bolumDropdown">
+                            @if (ViewBag.BolumListesi != null)
+                            {
+                                @foreach (var bolum in (List<string>)ViewBag.BolumListesi)
+                                {
+                                    <div class="universite-option" data-value="@bolum">@bolum</div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <span asp-validation-for="Bolum" class="field-validation-error"></span>
+                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Listeden seçebilir veya manuel olarak yazabilirsiniz.</small>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="Sinif">Sınıf *</label>
+                    <select asp-for="Sinif" required>
+                        <option value="">Seçiniz</option>
+                        <option value="Hazırlık">Hazırlık</option>
+                        <option value="1">1. Sınıf</option>
+                        <option value="2">2. Sınıf</option>
+                        <option value="3">3. Sınıf</option>
+                        <option value="4">4. Sınıf</option>
+                    </select>
+                    <span asp-validation-for="Sinif" class="field-validation-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NotOrtalamasi">Not Ortalaması (0.00-4.00) *</label>
+                    <input asp-for="NotOrtalamasi" type="number" step="0.01" min="0" max="4" required />
+                    <span asp-validation-for="NotOrtalamasi" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="KardesSayisi">Kardeş Sayısı *</label>
+                    <select asp-for="KardesSayisi" required>
+                        <option value="">Seçiniz</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="4+">4+</option>
+                    </select>
+                    <span asp-validation-for="KardesSayisi" class="field-validation-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AileGeliri">Aile Aylık Geliri (TL) *</label>
+                    <input asp-for="AileGeliri" type="number" step="0.01" min="0" required />
+                    <span asp-validation-for="AileGeliri" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="AnneMeslek">Anne Meslek</label>
+                    <input asp-for="AnneMeslek" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="BabaMeslek">Baba Meslek</label>
+                    <input asp-for="BabaMeslek" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group full-width">
+                    <label asp-for="ProfilFoto">Profil Fotoğrafı (isteğe bağlı)</label>
+                    <input asp-for="ProfilFoto" type="file" accept="image/*" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group full-width">
+                    <label asp-for="KlasikSoru1Cevap"></label>
+                    <textarea asp-for="KlasikSoru1Cevap" rows="3"></textarea>
+                    <span asp-validation-for="KlasikSoru1Cevap" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group full-width">
+                    <label asp-for="KlasikSoru2Cevap"></label>
+                    <textarea asp-for="KlasikSoru2Cevap" rows="3"></textarea>
+                    <span asp-validation-for="KlasikSoru2Cevap" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group full-width">
+                    <label asp-for="KlasikSoru3Cevap"></label>
+                    <textarea asp-for="KlasikSoru3Cevap" rows="3"></textarea>
+                    <span asp-validation-for="KlasikSoru3Cevap" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Başvuruyu Gönder</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        (function() {
+            const input = document.getElementById('universiteInput');
+            const dropdown = document.getElementById('universiteDropdown');
+            const toggle = document.getElementById('dropdownToggle');
+            const options = dropdown.querySelectorAll('.universite-option');
+            let currentHighlight = -1;
+            
+            // Dropdown toggle butonu
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+                toggle.classList.toggle('rotated');
+            });
+            
+            // Input'a tıklandığında dropdown'u aç
+            input.addEventListener('focus', function() {
+                filterOptions();
+                dropdown.classList.add('show');
+                toggle.classList.add('rotated');
+            });
+            
+            // Input'a yazıldığında filtrele
+            input.addEventListener('input', function() {
+                filterOptions();
+                dropdown.classList.add('show');
+                toggle.classList.add('rotated');
+                currentHighlight = -1;
+            });
+            
+            // Option'a tıklandığında seç
+            options.forEach(function(option) {
+                option.addEventListener('click', function() {
+                    input.value = this.getAttribute('data-value');
+                    dropdown.classList.remove('show');
+                    toggle.classList.remove('rotated');
+                    input.focus();
+                });
+            });
+            
+            // Klavye navigasyonu
+            input.addEventListener('keydown', function(e) {
+                if (!dropdown.classList.contains('show')) {
+                    if (e.key === 'ArrowDown' || e.key === 'Enter') {
+                        e.preventDefault();
+                        filterOptions();
+                        dropdown.classList.add('show');
+                        toggle.classList.add('rotated');
+                        currentHighlight = 0;
+                        highlightOption(currentHighlight);
+                    }
+                    return;
+                }
+                
+                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    currentHighlight = (currentHighlight + 1) % visibleOptions.length;
+                    highlightOption(currentHighlight);
+                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    currentHighlight = currentHighlight <= 0 ? visibleOptions.length - 1 : currentHighlight - 1;
+                    highlightOption(currentHighlight);
+                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (currentHighlight >= 0 && visibleOptions[currentHighlight]) {
+                        visibleOptions[currentHighlight].click();
+                    }
+                } else if (e.key === 'Escape') {
+                    dropdown.classList.remove('show');
+                    toggle.classList.remove('rotated');
+                    currentHighlight = -1;
+                }
+            });
+            
+            // Dışarı tıklandığında kapat
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !dropdown.contains(e.target) && !toggle.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    toggle.classList.remove('rotated');
+                    currentHighlight = -1;
+                }
+            });
+            
+            function filterOptions() {
+                const searchTerm = input.value.toLowerCase();
+                let visibleCount = 0;
+                
+                options.forEach(function(option) {
+                    const text = option.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        option.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+                
+                // Eğer hiç sonuç yoksa göster
+                if (visibleCount === 0 && searchTerm === '') {
+                    options.forEach(function(option) {
+                        option.style.display = 'block';
+                    });
+                }
+            }
+            
+            function highlightOption(index) {
+                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
+                visibleOptions.forEach(function(opt, i) {
+                    if (i === index) {
+                        opt.classList.add('highlight');
+                    } else {
+                        opt.classList.remove('highlight');
+                    }
+                });
+            }
+        })();
+
+        // Fakülte Dropdown
+        (function() {
+            const input = document.getElementById('fakulteInput');
+            const dropdown = document.getElementById('fakulteDropdown');
+            const toggle = document.getElementById('fakulteDropdownToggle');
+            const options = dropdown.querySelectorAll('.universite-option');
+            let currentHighlight = -1;
+            
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+                toggle.classList.toggle('rotated');
+            });
+            
+            input.addEventListener('focus', function() {
+                filterOptions();
+                dropdown.classList.add('show');
+                toggle.classList.add('rotated');
+            });
+            
+            input.addEventListener('input', function() {
+                filterOptions();
+                dropdown.classList.add('show');
+                toggle.classList.add('rotated');
+                currentHighlight = -1;
+            });
+            
+            options.forEach(function(option) {
+                option.addEventListener('click', function() {
+                    input.value = this.getAttribute('data-value');
+                    dropdown.classList.remove('show');
+                    toggle.classList.remove('rotated');
+                    input.focus();
+                });
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (!dropdown.classList.contains('show')) {
+                    if (e.key === 'ArrowDown' || e.key === 'Enter') {
+                        e.preventDefault();
+                        filterOptions();
+                        dropdown.classList.add('show');
+                        toggle.classList.add('rotated');
+                        currentHighlight = 0;
+                        highlightOption(currentHighlight);
+                    }
+                    return;
+                }
+                
+                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    currentHighlight = (currentHighlight + 1) % visibleOptions.length;
+                    highlightOption(currentHighlight);
+                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    currentHighlight = currentHighlight <= 0 ? visibleOptions.length - 1 : currentHighlight - 1;
+                    highlightOption(currentHighlight);
+                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (currentHighlight >= 0 && visibleOptions[currentHighlight]) {
+                        visibleOptions[currentHighlight].click();
+                    }
+                } else if (e.key === 'Escape') {
+                    dropdown.classList.remove('show');
+                    toggle.classList.remove('rotated');
+                    currentHighlight = -1;
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !dropdown.contains(e.target) && !toggle.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    toggle.classList.remove('rotated');
+                    currentHighlight = -1;
+                }
+            });
+            
+            function filterOptions() {
+                const searchTerm = input.value.toLowerCase();
+                let visibleCount = 0;
+                
+                options.forEach(function(option) {
+                    const text = option.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        option.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+                
+                if (visibleCount === 0 && searchTerm === '') {
+                    options.forEach(function(option) {
+                        option.style.display = 'block';
+                    });
+                }
+            }
+            
+            function highlightOption(index) {
+                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
+                visibleOptions.forEach(function(opt, i) {
+                    if (i === index) {
+                        opt.classList.add('highlight');
+                    } else {
+                        opt.classList.remove('highlight');
+                    }
+                });
+            }
+        })();
+
+        // Bölüm Dropdown
+        (function() {
+            const input = document.getElementById('bolumInput');
+            const dropdown = document.getElementById('bolumDropdown');
+            const toggle = document.getElementById('bolumDropdownToggle');
+            const options = dropdown.querySelectorAll('.universite-option');
+            let currentHighlight = -1;
+            
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+                toggle.classList.toggle('rotated');
+            });
+            
+            input.addEventListener('focus', function() {
+                filterOptions();
+                dropdown.classList.add('show');
+                toggle.classList.add('rotated');
+            });
+            
+            input.addEventListener('input', function() {
+                filterOptions();
+                dropdown.classList.add('show');
+                toggle.classList.add('rotated');
+                currentHighlight = -1;
+            });
+            
+            options.forEach(function(option) {
+                option.addEventListener('click', function() {
+                    input.value = this.getAttribute('data-value');
+                    dropdown.classList.remove('show');
+                    toggle.classList.remove('rotated');
+                    input.focus();
+                });
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (!dropdown.classList.contains('show')) {
+                    if (e.key === 'ArrowDown' || e.key === 'Enter') {
+                        e.preventDefault();
+                        filterOptions();
+                        dropdown.classList.add('show');
+                        toggle.classList.add('rotated');
+                        currentHighlight = 0;
+                        highlightOption(currentHighlight);
+                    }
+                    return;
+                }
+                
+                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    currentHighlight = (currentHighlight + 1) % visibleOptions.length;
+                    highlightOption(currentHighlight);
+                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    currentHighlight = currentHighlight <= 0 ? visibleOptions.length - 1 : currentHighlight - 1;
+                    highlightOption(currentHighlight);
+                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (currentHighlight >= 0 && visibleOptions[currentHighlight]) {
+                        visibleOptions[currentHighlight].click();
+                    }
+                } else if (e.key === 'Escape') {
+                    dropdown.classList.remove('show');
+                    toggle.classList.remove('rotated');
+                    currentHighlight = -1;
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !dropdown.contains(e.target) && !toggle.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    toggle.classList.remove('rotated');
+                    currentHighlight = -1;
+                }
+            });
+            
+            function filterOptions() {
+                const searchTerm = input.value.toLowerCase();
+                let visibleCount = 0;
+                
+                options.forEach(function(option) {
+                    const text = option.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        option.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+                
+                if (visibleCount === 0 && searchTerm === '') {
+                    options.forEach(function(option) {
+                        option.style.display = 'block';
+                    });
+                }
+            }
+            
+            function highlightOption(index) {
+                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
+                visibleOptions.forEach(function(opt, i) {
+                    if (i === index) {
+                        opt.classList.add('highlight');
+                    } else {
+                        opt.classList.remove('highlight');
+                    }
+                });
+            }
+        })();
+
+        // Telefon Numarası Formatlama - Basit ve Güvenilir Versiyon
+        (function() {
+            const telefonInput = document.getElementById('telefonInput');
+            
+            if (telefonInput) {
+                function formatPhone(numbers) {
+                    if (!numbers || numbers.length === 0) return '';
+                    
+                    // Maksimum 11 rakam (zaten input event'inde kontrol ediliyor)
+                    let formatted = '';
+                    if (numbers.length > 0) {
+                        formatted = numbers.charAt(0); // 0
+                        if (numbers.length > 1) {
+                            formatted += ' (' + numbers.substring(1, Math.min(4, numbers.length)); // (5XX
+                            if (numbers.length > 4) {
+                                formatted += ') ' + numbers.substring(4, Math.min(7, numbers.length)); // ) XXX
+                                if (numbers.length > 7) {
+                                    formatted += ' ' + numbers.substring(7, Math.min(9, numbers.length)); // XX
+                                    if (numbers.length > 9) {
+                                        // Son 2 rakamı al (9. indeksten sonrası = 10. ve 11. rakamlar)
+                                        formatted += ' ' + numbers.substring(9, Math.min(11, numbers.length)); // XX
+                                    }
+                                }
+                            } else if (numbers.length > 1) {
+                                formatted += ')';
+                            }
+                        }
+                    }
+                    return formatted;
+                }
+                
+                function getDigitCountBeforePosition(value, position) {
+                    let count = 0;
+                    for (let i = 0; i < position && i < value.length; i++) {
+                        if (/\d/.test(value[i])) {
+                            count++;
+                        }
+                    }
+                    return count;
+                }
+                
+                function getPositionAfterDigitCount(formatted, digitCount) {
+                    let count = 0;
+                    for (let i = 0; i < formatted.length; i++) {
+                        if (/\d/.test(formatted[i])) {
+                            count++;
+                            if (count === digitCount) {
+                                return i + 1;
+                            }
+                        }
+                    }
+                    return formatted.length;
+                }
+                
+                telefonInput.addEventListener('input', function(e) {
+                    const oldValue = this.value;
+                    const oldCursor = this.selectionStart;
+                    
+                    // Sadece rakamları al
+                    let numbers = this.value.replace(/\D/g, '');
+                    
+                    // Maksimum 11 rakam (manuel kontrol)
+                    if (numbers.length > 11) {
+                        numbers = numbers.substring(0, 11);
+                    }
+                    
+                    // Formatla
+                    const formatted = formatPhone(numbers);
+                    this.value = formatted;
+                    
+                    // Cursor pozisyonunu ayarla
+                    const digitsBeforeCursor = getDigitCountBeforePosition(oldValue, oldCursor);
+                    let newCursor = getPositionAfterDigitCount(formatted, digitsBeforeCursor);
+                    
+                    // Eğer yeni rakam eklendiyse, cursor'ü bir sonraki pozisyona al
+                    const oldNumbers = oldValue.replace(/\D/g, '');
+                    if (numbers.length > oldNumbers.length) {
+                        newCursor = getPositionAfterDigitCount(formatted, numbers.length);
+                    }
+                    
+                    this.setSelectionRange(newCursor, newCursor);
+                });
+                
+                telefonInput.addEventListener('keydown', function(e) {
+                    const cursorPos = this.selectionStart;
+                    const value = this.value;
+                    const numbers = value.replace(/\D/g, '');
+                    
+                    // Backspace tuşu
+                    if (e.key === 'Backspace') {
+                        const digitsBeforeCursor = getDigitCountBeforePosition(value, cursorPos);
+                        
+                        // Eğer format karakterindeyse veya rakam varsa
+                        if (cursorPos > 0 && digitsBeforeCursor > 0) {
+                            // Önceki rakamı sil
+                            const newNumbers = numbers.substring(0, digitsBeforeCursor - 1) + numbers.substring(digitsBeforeCursor);
+                            const formatted = formatPhone(newNumbers);
+                            this.value = formatted;
+                            
+                            // Cursor'ü ayarla
+                            const newCursor = getPositionAfterDigitCount(formatted, digitsBeforeCursor - 1);
+                            this.setSelectionRange(newCursor, newCursor);
+                            e.preventDefault();
+                        }
+                    }
+                    
+                    // Delete tuşu
+                    if (e.key === 'Delete') {
+                        const digitsBeforeCursor = getDigitCountBeforePosition(value, cursorPos);
+                        
+                        // Eğer rakam varsa
+                        if (digitsBeforeCursor < numbers.length) {
+                            // Sonraki rakamı sil
+                            const newNumbers = numbers.substring(0, digitsBeforeCursor) + numbers.substring(digitsBeforeCursor + 1);
+                            const formatted = formatPhone(newNumbers);
+                            this.value = formatted;
+                            
+                            // Cursor'ü ayarla
+                            const newCursor = getPositionAfterDigitCount(formatted, digitsBeforeCursor);
+                            this.setSelectionRange(newCursor, newCursor);
+                            e.preventDefault();
+                        }
+                    }
+                    
+                    // Sadece rakam, backspace, delete, tab, arrow keys ve home/end tuşlarına izin ver
+                    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+                    const isNumber = (e.key >= '0' && e.key <= '9');
+                    const isAllowed = allowedKeys.includes(e.key) || (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase()));
+                    
+                    if (!isNumber && !isAllowed) {
+                        e.preventDefault();
+                    }
+                });
+                
+                telefonInput.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                    const numbers = pastedText.replace(/\D/g, '').substring(0, 11);
+                    const formatted = formatPhone(numbers);
+                    this.value = formatted;
+                    this.setSelectionRange(formatted.length, formatted.length);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
+

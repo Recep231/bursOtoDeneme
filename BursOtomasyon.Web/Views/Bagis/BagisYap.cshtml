@@ -1,0 +1,423 @@
+@model BursOtomasyon.Web.Models.BagisViewModel
+@{
+    ViewData["Title"] = "Bağış Yap";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="tel"] {
+            letter-spacing: 0.5px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .iban-info {
+            background: #f0f7ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .iban-info strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .iban-info code {
+            background: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .field-validation-error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .amount-input {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .amount-input::placeholder {
+            font-size: 16px;
+            font-weight: normal;
+            color: #999;
+        }
+
+        @@media (max-width: 768px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💝 Bağış Yap</h1>
+        <p class="subtitle">Öğrencilere destek olmak için bağış yapabilirsiniz</p>
+
+        @if (ViewBag.Success != null && ViewBag.Success)
+        {
+            <div class="alert alert-success">
+                <strong>✅ Başarılı!</strong> @ViewBag.Message
+            </div>
+        }
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-error">
+                <strong>❌ Hata!</strong> @ViewBag.Error
+            </div>
+        }
+
+        <div class="iban-info">
+            <strong>Bağış IBAN Numarası:</strong>
+            <code>TR00 0000 0000 0000 0000 0000 00</code>
+            <p style="margin-top: 10px; font-size: 13px; color: #666;">
+                Bağışınızı yukarıdaki IBAN numarasına havale/EFT yapabilirsiniz. Formu doldurduktan sonra ödeme yapmanız yeterlidir.
+            </p>
+        </div>
+        
+        <a href="/" class="back-link" style="display: inline-block; margin-bottom: 20px; color: #667eea; text-decoration: none; font-weight: 500;">← Ana Sayfaya Dön</a>
+
+        <form asp-action="BagisYap" method="post">
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="Ad">Ad *</label>
+                    <input asp-for="Ad" placeholder="Adınızı giriniz" required />
+                    <span asp-validation-for="Ad" class="field-validation-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Soyad">Soyad *</label>
+                    <input asp-for="Soyad" placeholder="Soyadınızı giriniz" required />
+                    <span asp-validation-for="Soyad" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="Email">E-posta *</label>
+                    <input asp-for="Email" type="email" placeholder="ornek@email.com" required />
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Telefon">Telefon</label>
+                    <input asp-for="Telefon" type="tel" id="telefonInputBagis" placeholder="0 (5XX) XXX XX XX" pattern="[0-9\s\(\)\-]+" />
+                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Format: 0 (5XX) XXX XX XX</small>
+                    <span asp-validation-for="Telefon" class="field-validation-error"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group full-width">
+                <label asp-for="Tutar">Bağış Tutarı (TL) *</label>
+                <input asp-for="Tutar" type="number" step="0.01" min="1" class="amount-input" placeholder="0.00" required />
+                <span asp-validation-for="Tutar" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group full-width">
+                <label asp-for="Aciklama">Açıklama (İsteğe bağlı)</label>
+                <textarea asp-for="Aciklama" rows="4" placeholder="Bağışınızla ilgili bir mesaj yazabilirsiniz..."></textarea>
+                <span asp-validation-for="Aciklama" class="field-validation-error"></span>
+            </div>
+
+            <button type="submit" class="btn-submit">💝 Bağış Yap</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        // Tutar formatlaması
+        document.getElementById('Tutar')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d.,]/g, '');
+            value = value.replace(',', '.');
+            e.target.value = value;
+        });
+
+        // Telefon Numarası Formatlama - Basit ve Güvenilir Versiyon
+        (function() {
+            const telefonInput = document.getElementById('telefonInputBagis');
+            
+            if (telefonInput) {
+                function formatPhone(numbers) {
+                    if (!numbers || numbers.length === 0) return '';
+                    
+                    // Maksimum 11 rakam (zaten input event'inde kontrol ediliyor)
+                    let formatted = '';
+                    if (numbers.length > 0) {
+                        formatted = numbers.charAt(0); // 0
+                        if (numbers.length > 1) {
+                            formatted += ' (' + numbers.substring(1, Math.min(4, numbers.length)); // (5XX
+                            if (numbers.length > 4) {
+                                formatted += ') ' + numbers.substring(4, Math.min(7, numbers.length)); // ) XXX
+                                if (numbers.length > 7) {
+                                    formatted += ' ' + numbers.substring(7, Math.min(9, numbers.length)); // XX
+                                    if (numbers.length > 9) {
+                                        // Son 2 rakamı al (9. indeksten sonrası = 10. ve 11. rakamlar)
+                                        formatted += ' ' + numbers.substring(9, Math.min(11, numbers.length)); // XX
+                                    }
+                                }
+                            } else if (numbers.length > 1) {
+                                formatted += ')';
+                            }
+                        }
+                    }
+                    return formatted;
+                }
+                
+                function getDigitCountBeforePosition(value, position) {
+                    let count = 0;
+                    for (let i = 0; i < position && i < value.length; i++) {
+                        if (/\d/.test(value[i])) {
+                            count++;
+                        }
+                    }
+                    return count;
+                }
+                
+                function getPositionAfterDigitCount(formatted, digitCount) {
+                    let count = 0;
+                    for (let i = 0; i < formatted.length; i++) {
+                        if (/\d/.test(formatted[i])) {
+                            count++;
+                            if (count === digitCount) {
+                                return i + 1;
+                            }
+                        }
+                    }
+                    return formatted.length;
+                }
+                
+                telefonInput.addEventListener('input', function(e) {
+                    const oldValue = this.value;
+                    const oldCursor = this.selectionStart;
+                    
+                    // Sadece rakamları al
+                    let numbers = this.value.replace(/\D/g, '');
+                    
+                    // Maksimum 11 rakam (manuel kontrol)
+                    if (numbers.length > 11) {
+                        numbers = numbers.substring(0, 11);
+                    }
+                    
+                    // Formatla
+                    const formatted = formatPhone(numbers);
+                    this.value = formatted;
+                    
+                    // Cursor pozisyonunu ayarla
+                    const digitsBeforeCursor = getDigitCountBeforePosition(oldValue, oldCursor);
+                    let newCursor = getPositionAfterDigitCount(formatted, digitsBeforeCursor);
+                    
+                    // Eğer yeni rakam eklendiyse, cursor'ü bir sonraki pozisyona al
+                    const oldNumbers = oldValue.replace(/\D/g, '');
+                    if (numbers.length > oldNumbers.length) {
+                        newCursor = getPositionAfterDigitCount(formatted, numbers.length);
+                    }
+                    
+                    this.setSelectionRange(newCursor, newCursor);
+                });
+                
+                telefonInput.addEventListener('keydown', function(e) {
+                    const cursorPos = this.selectionStart;
+                    const value = this.value;
+                    const numbers = value.replace(/\D/g, '');
+                    
+                    // Backspace tuşu
+                    if (e.key === 'Backspace') {
+                        const digitsBeforeCursor = getDigitCountBeforePosition(value, cursorPos);
+                        
+                        // Eğer format karakterindeyse veya rakam varsa
+                        if (cursorPos > 0 && digitsBeforeCursor > 0) {
+                            // Önceki rakamı sil
+                            const newNumbers = numbers.substring(0, digitsBeforeCursor - 1) + numbers.substring(digitsBeforeCursor);
+                            const formatted = formatPhone(newNumbers);
+                            this.value = formatted;
+                            
+                            // Cursor'ü ayarla
+                            const newCursor = getPositionAfterDigitCount(formatted, digitsBeforeCursor - 1);
+                            this.setSelectionRange(newCursor, newCursor);
+                            e.preventDefault();
+                        }
+                    }
+                    
+                    // Delete tuşu
+                    if (e.key === 'Delete') {
+                        const digitsBeforeCursor = getDigitCountBeforePosition(value, cursorPos);
+                        
+                        // Eğer rakam varsa
+                        if (digitsBeforeCursor < numbers.length) {
+                            // Sonraki rakamı sil
+                            const newNumbers = numbers.substring(0, digitsBeforeCursor) + numbers.substring(digitsBeforeCursor + 1);
+                            const formatted = formatPhone(newNumbers);
+                            this.value = formatted;
+                            
+                            // Cursor'ü ayarla
+                            const newCursor = getPositionAfterDigitCount(formatted, digitsBeforeCursor);
+                            this.setSelectionRange(newCursor, newCursor);
+                            e.preventDefault();
+                        }
+                    }
+                    
+                    // Sadece rakam, backspace, delete, tab, arrow keys ve home/end tuşlarına izin ver
+                    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+                    const isNumber = (e.key >= '0' && e.key <= '9');
+                    const isAllowed = allowedKeys.includes(e.key) || (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase()));
+                    
+                    if (!isNumber && !isAllowed) {
+                        e.preventDefault();
+                    }
+                });
+                
+                telefonInput.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                    const numbers = pastedText.replace(/\D/g, '').substring(0, 11);
+                    const formatted = formatPhone(numbers);
+                    this.value = formatted;
+                    this.setSelectionRange(formatted.length, formatted.length);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
+

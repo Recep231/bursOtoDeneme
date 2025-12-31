@@ -1,0 +1,124 @@
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Burs Otomasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            color: white;
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.3em;
+            margin-bottom: 60px;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .main-button {
+            background: white;
+            color: #667eea;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-size: 1.5em;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .main-button:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .main-button .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .main-button .text {
+            font-size: 1.2em;
+        }
+
+        .button-bagis {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .button-basvuru {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        @@media (max-width: 768px) {
+            .button-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Burs Otomasyonu</h1>
+        <p class="subtitle">Öğrencilere destek olmak için bağış yapabilir veya burs başvurusunda bulunabilirsiniz</p>
+        
+        <div class="button-container">
+            <a href="/Bagis/BagisYap" class="main-button button-bagis">
+                <div class="icon">💝</div>
+                <div class="text">Bağış Yap</div>
+            </a>
+            
+            <a href="/Home/BasvuruYap" class="main-button button-basvuru">
+                <div class="icon">📝</div>
+                <div class="text">Burs Başvurusu Yap</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
