@@ -54,6 +54,7 @@ namespace BursOtomasyon.Desktop.Forms
             // 
             // btnDetay
             // 
+            btnDetay.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDetay.Location = new Point(12, 544);
             btnDetay.Name = "btnDetay";
             btnDetay.Size = new Size(100, 32);
@@ -63,6 +64,7 @@ namespace BursOtomasyon.Desktop.Forms
             // 
             // btnOnayla
             // 
+            btnOnayla.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnOnayla.Location = new Point(118, 544);
             btnOnayla.Name = "btnOnayla";
             btnOnayla.Size = new Size(100, 32);
@@ -72,6 +74,7 @@ namespace BursOtomasyon.Desktop.Forms
             // 
             // btnReddet
             // 
+            btnReddet.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnReddet.Location = new Point(224, 544);
             btnReddet.Name = "btnReddet";
             btnReddet.Size = new Size(100, 32);
@@ -81,6 +84,7 @@ namespace BursOtomasyon.Desktop.Forms
             // 
             // btnSecilenleriSil
             // 
+            btnSecilenleriSil.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSecilenleriSil.Location = new Point(330, 544);
             btnSecilenleriSil.Name = "btnSecilenleriSil";
             btnSecilenleriSil.Size = new Size(120, 32);
@@ -90,6 +94,7 @@ namespace BursOtomasyon.Desktop.Forms
             // 
             // btnKapat
             // 
+            btnKapat.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnKapat.Location = new Point(888, 544);
             btnKapat.Name = "btnKapat";
             btnKapat.Size = new Size(100, 32);
@@ -108,6 +113,10 @@ namespace BursOtomasyon.Desktop.Forms
             Controls.Add(btnOnayla);
             Controls.Add(btnDetay);
             Controls.Add(gridControl1);
+            FormBorderStyle = FormBorderStyle.Sizable;
+            MaximizeBox = true;
+            MinimizeBox = true;
+            MinimumSize = new Size(800, 500);
             Name = "BasvuruListeForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Başvuru Listesi";

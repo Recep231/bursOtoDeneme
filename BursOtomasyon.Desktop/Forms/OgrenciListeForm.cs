@@ -17,7 +17,7 @@ namespace BursOtomasyon.Desktop.Forms
         private bool _isUpdateMode;
         private bool _isDeleteMode;
 
-        public OgrenciListeForm(bool isUpdateMode = false, bool isDeleteMode = false)
+        public OgrenciListeForm(bool isUpdateMode = true, bool isDeleteMode = false)
         {
             _isUpdateMode = isUpdateMode;
             _isDeleteMode = isDeleteMode;
@@ -25,16 +25,9 @@ namespace BursOtomasyon.Desktop.Forms
             _ogrenciService = new OgrenciService();
             LoadOgrenciKartlari();
             
-            // Güncelleme modunda "Güncelle" butonunu göster
-            if (_isUpdateMode)
-            {
-                btnGuncelle.Visible = true;
-                this.Text = "Öğrenci Seç - Güncelle";
-            }
-            else
-            {
-                btnGuncelle.Visible = false;
-            }
+            // Her zaman güncelle butonunu göster
+            btnGuncelle.Visible = true;
+            this.Text = "Öğrenci Listele / Güncelle";
             
             // Butonları modernize et
             ModernizeButtons();
@@ -99,9 +92,6 @@ namespace BursOtomasyon.Desktop.Forms
         
         private void btnGuncelle_Click(object sender, EventArgs e)
         {
-            if (!_isUpdateMode)
-                return;
-            
             // Seçili öğrenci ID'sini kontrol et
             if (_selectedOgrenci == null || _selectedOgrenci.OgrenciID <= 0)
             {
@@ -227,6 +217,17 @@ namespace BursOtomasyon.Desktop.Forms
                 SelectCard(cardPanel, ogrenci);
             };
             
+            // Tüm child kontrollere de click eventi ekle
+            void AddClickToChildren(Control parent)
+            {
+                foreach (Control child in parent.Controls)
+                {
+                    child.Click += (s, e) => SelectCard(cardPanel, ogrenci);
+                    if (child.HasChildren)
+                        AddClickToChildren(child);
+                }
+            }
+            
             // Fotoğraf container (kompakt)
             var photoContainer = new PanelControl();
             photoContainer.Location = new Point(7, 7);
@@ -305,6 +306,9 @@ namespace BursOtomasyon.Desktop.Forms
             cardPanel.Controls.Add(photoContainer);
             cardPanel.Controls.Add(infoPanel);
             
+            // Child kontrollere click eventi ekle
+            AddClickToChildren(cardPanel);
+            
             return cardPanel;
         }
         
@@ -345,7 +349,7 @@ namespace BursOtomasyon.Desktop.Forms
             // Seçili öğrenci ID'sini kontrol et
             bool hasSelection = _selectedOgrenci != null && _selectedOgrenci.OgrenciID > 0;
             btnDetay.Enabled = hasSelection;
-            btnGuncelle.Enabled = hasSelection && _isUpdateMode;
+            btnGuncelle.Enabled = hasSelection;
             btnSil.Enabled = hasSelection;
         }
         

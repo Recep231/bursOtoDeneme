@@ -299,16 +299,58 @@ namespace BursOtomasyon.Desktop.Services
             if (string.IsNullOrWhiteSpace(bolum))
                 return 1.00m;
 
-            // Tam eşleşme kontrolü
-            if (_bolumKatsayiMap.TryGetValue(bolum.Trim(), out decimal katsayi))
+            var bolumTrim = bolum.Trim();
+            var bolumLower = bolumTrim.ToLowerInvariant();
+
+            // 1. Tam eşleşme kontrolü
+            if (_bolumKatsayiMap.TryGetValue(bolumTrim, out decimal katsayi))
                 return katsayi;
 
-            // Kısmi eşleşme kontrolü (bölüm adı içinde geçiyorsa)
-            var bolumLower = bolum.Trim().ToLowerInvariant();
+            // 2. Anahtar kelime bazlı eşleşme (daha akıllı)
+            // Tıp ve Sağlık Bilimleri (1.30)
+            if (bolumLower.Contains("tıp") || bolumLower.Contains("tip") || 
+                bolumLower.Contains("hekimli") || bolumLower.Contains("eczacı") ||
+                bolumLower.Contains("hemşire") || bolumLower.Contains("ebelik") ||
+                bolumLower.Contains("fizyoterapi") || bolumLower.Contains("beslenme") ||
+                bolumLower.Contains("diyetetik") || bolumLower.Contains("veteriner") ||
+                bolumLower.Contains("diş"))
+                return 1.30m;
+
+            // Mühendislik (1.15)
+            if (bolumLower.Contains("mühendis") || bolumLower.Contains("muhendis") ||
+                bolumLower.Contains("mimarlık") || bolumLower.Contains("mimarlik") ||
+                bolumLower.Contains("yazılım") || bolumLower.Contains("yazilim") ||
+                bolumLower.Contains("bilgisayar") && !bolumLower.Contains("öğretmen"))
+                return 1.15m;
+
+            // Hukuk (1.10)
+            if (bolumLower.Contains("hukuk"))
+                return 1.10m;
+
+            // Fen-Edebiyat (1.05)
+            if (bolumLower.Contains("matematik") && !bolumLower.Contains("öğretmen") ||
+                bolumLower.Contains("fizik") && !bolumLower.Contains("öğretmen") ||
+                bolumLower.Contains("kimya") && !bolumLower.Contains("öğretmen") ||
+                bolumLower.Contains("biyoloji") && !bolumLower.Contains("öğretmen") ||
+                bolumLower.Contains("genetik") || bolumLower.Contains("istatistik") ||
+                bolumLower.Contains("astronomi") || bolumLower.Contains("psikoloji") ||
+                bolumLower.Contains("sosyoloji") || bolumLower.Contains("felsefe") ||
+                bolumLower.Contains("tarih") && !bolumLower.Contains("öğretmen") ||
+                bolumLower.Contains("edebiyat") || bolumLower.Contains("dilbilim") ||
+                bolumLower.Contains("arkeoloji") || bolumLower.Contains("antropoloji") ||
+                bolumLower.Contains("coğrafya") && !bolumLower.Contains("öğretmen"))
+                return 1.05m;
+
+            // Ziraat ve Orman (1.05)
+            if (bolumLower.Contains("ziraat") || bolumLower.Contains("tarım") ||
+                bolumLower.Contains("orman") || bolumLower.Contains("su ürün"))
+                return 1.05m;
+
+            // 3. Kısmi eşleşme kontrolü (map'ten)
             foreach (var kvp in _bolumKatsayiMap)
             {
-                if (bolumLower.Contains(kvp.Key.ToLowerInvariant()) || 
-                    kvp.Key.ToLowerInvariant().Contains(bolumLower))
+                var keyLower = kvp.Key.ToLowerInvariant();
+                if (bolumLower.Contains(keyLower) || keyLower.Contains(bolumLower))
                 {
                     return kvp.Value;
                 }

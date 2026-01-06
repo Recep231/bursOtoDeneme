@@ -1,5 +1,7 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace BursOtomasyon.Desktop.Forms
 {
@@ -11,6 +13,7 @@ namespace BursOtomasyon.Desktop.Forms
         private SimpleButton btnSecilenOgrenciPuanHesapla = null!;
         private SimpleButton btnTumPuanlariHesapla = null!;
         private SimpleButton btnKapat = null!;
+        private PanelControl panelButtons = null!;
 
         protected override void Dispose(bool disposing)
         {
@@ -28,9 +31,20 @@ namespace BursOtomasyon.Desktop.Forms
             btnSecilenOgrenciPuanHesapla = new SimpleButton();
             btnTumPuanlariHesapla = new SimpleButton();
             btnKapat = new SimpleButton();
+            panelButtons = new PanelControl();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)panelButtons).BeginInit();
             SuspendLayout();
+            // 
+            // panelButtons
+            // 
+            panelButtons.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            panelButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panelButtons.Location = new System.Drawing.Point(0, 505);
+            panelButtons.Name = "panelButtons";
+            panelButtons.Size = new System.Drawing.Size(580, 50);
+            panelButtons.TabIndex = 10;
             // 
             // gridControl1
             // 
@@ -38,7 +52,7 @@ namespace BursOtomasyon.Desktop.Forms
             gridControl1.Location = new System.Drawing.Point(0, 0);
             gridControl1.MainView = gridView1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(1000, 500);
+            gridControl1.Size = new System.Drawing.Size(580, 505);
             gridControl1.TabIndex = 0;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -49,27 +63,40 @@ namespace BursOtomasyon.Desktop.Forms
             // 
             // btnSecilenOgrenciPuanHesapla
             // 
-            btnSecilenOgrenciPuanHesapla.Location = new System.Drawing.Point(12, 510);
+            btnSecilenOgrenciPuanHesapla.Location = new System.Drawing.Point(10, 10);
             btnSecilenOgrenciPuanHesapla.Name = "btnSecilenOgrenciPuanHesapla";
-            btnSecilenOgrenciPuanHesapla.Size = new System.Drawing.Size(150, 32);
+            btnSecilenOgrenciPuanHesapla.Size = new System.Drawing.Size(180, 32);
             btnSecilenOgrenciPuanHesapla.TabIndex = 1;
-            btnSecilenOgrenciPuanHesapla.Text = "Seçilen Öğrenci Puanı Hesapla";
+            btnSecilenOgrenciPuanHesapla.Text = "📊 Seçilen Puanı Hesapla";
+            btnSecilenOgrenciPuanHesapla.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            btnSecilenOgrenciPuanHesapla.Appearance.BackColor = System.Drawing.Color.FromArgb(0, 123, 255);
+            btnSecilenOgrenciPuanHesapla.Appearance.ForeColor = System.Drawing.Color.White;
+            btnSecilenOgrenciPuanHesapla.Appearance.Options.UseFont = true;
+            btnSecilenOgrenciPuanHesapla.Appearance.Options.UseBackColor = true;
+            btnSecilenOgrenciPuanHesapla.Appearance.Options.UseForeColor = true;
             btnSecilenOgrenciPuanHesapla.Click += new System.EventHandler(btnSecilenOgrenciPuanHesapla_Click);
             // 
             // btnTumPuanlariHesapla
             // 
-            btnTumPuanlariHesapla.Location = new System.Drawing.Point(168, 510);
+            btnTumPuanlariHesapla.Location = new System.Drawing.Point(200, 10);
             btnTumPuanlariHesapla.Name = "btnTumPuanlariHesapla";
-            btnTumPuanlariHesapla.Size = new System.Drawing.Size(150, 32);
+            btnTumPuanlariHesapla.Size = new System.Drawing.Size(170, 32);
             btnTumPuanlariHesapla.TabIndex = 2;
-            btnTumPuanlariHesapla.Text = "Tüm Puanları Hesapla";
+            btnTumPuanlariHesapla.Text = "📋 Tüm Puanları Hesapla";
+            btnTumPuanlariHesapla.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            btnTumPuanlariHesapla.Appearance.BackColor = System.Drawing.Color.FromArgb(40, 167, 69);
+            btnTumPuanlariHesapla.Appearance.ForeColor = System.Drawing.Color.White;
+            btnTumPuanlariHesapla.Appearance.Options.UseFont = true;
+            btnTumPuanlariHesapla.Appearance.Options.UseBackColor = true;
+            btnTumPuanlariHesapla.Appearance.Options.UseForeColor = true;
             btnTumPuanlariHesapla.Click += new System.EventHandler(btnTumPuanlariHesapla_Click);
             // 
             // btnKapat
             // 
-            btnKapat.Location = new System.Drawing.Point(888, 510);
+            btnKapat.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            btnKapat.Location = new System.Drawing.Point(480, 10);
             btnKapat.Name = "btnKapat";
-            btnKapat.Size = new System.Drawing.Size(100, 32);
+            btnKapat.Size = new System.Drawing.Size(90, 32);
             btnKapat.TabIndex = 3;
             btnKapat.Text = "Kapat";
             btnKapat.Click += new System.EventHandler(btnKapat_Click);
@@ -78,16 +105,22 @@ namespace BursOtomasyon.Desktop.Forms
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1000, 550);
-            Controls.Add(btnKapat);
-            Controls.Add(btnTumPuanlariHesapla);
-            Controls.Add(btnSecilenOgrenciPuanHesapla);
+            ClientSize = new System.Drawing.Size(580, 555);
+            panelButtons.Controls.Add(btnSecilenOgrenciPuanHesapla);
+            panelButtons.Controls.Add(btnTumPuanlariHesapla);
+            panelButtons.Controls.Add(btnKapat);
             Controls.Add(gridControl1);
+            Controls.Add(panelButtons);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            MaximizeBox = true;
+            MinimizeBox = true;
+            MinimumSize = new System.Drawing.Size(550, 500);
             Name = "BursPuaniHesaplaForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             Text = "Burs Puanı Hesapla";
             ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)panelButtons).EndInit();
             ResumeLayout(false);
         }
 

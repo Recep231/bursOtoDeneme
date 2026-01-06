@@ -20,21 +20,22 @@ namespace BursOtomasyon.Desktop
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 
-                // DevExpress başlatma
+                // DevExpress başlatma - Demo ile aynı skin ayarı
                 SkinManager.EnableFormSkins();
-                UserLookAndFeel.Default.SetSkinStyle("Office 2019 Colorful");
+                // WXI skin kullan (Demo ile aynı modern görünüm)
+                UserLookAndFeel.Default.SetSkinStyle(SkinSvgPalette.WXI.Default);
                 
                 Application.Run(new MainForm());
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                string errorDetails = ex.Message;
-                if (ex.InnerException != null)
+                string errorDetails = error.Message;
+                if (error.InnerException != null)
                 {
-                    errorDetails += $"\n\nİç Hata: {ex.InnerException.Message}";
-                    if (ex.InnerException.InnerException != null)
+                    errorDetails += $"\n\nİç Hata: {error.InnerException.Message}";
+                    if (error.InnerException.InnerException != null)
                     {
-                        errorDetails += $"\n\nDetay: {ex.InnerException.InnerException.Message}";
+                        errorDetails += $"\n\nDetay: {error.InnerException.InnerException.Message}";
                     }
                 }
                 

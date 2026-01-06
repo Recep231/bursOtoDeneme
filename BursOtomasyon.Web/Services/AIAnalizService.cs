@@ -34,13 +34,13 @@ namespace BursOtomasyon.Web.Services
             {
                 var requestBody = new
                 {
-                    model = "llama-3.1-8b-instant",
+                    model = "llama-3.1-70b",
                     messages = new[]
                     {
-                        new { role = "system", content = "Sen burs otomasyonu konusunda uzman bir asistansın. Öğrenci burs başvurusu, gereklilikler, not ortalaması, gelir durumu, kardeş sayısı, sınıf, üniversite/fakülte/bölüm, başvuru durumu gibi konularda net, kısa ve Türkçe cevaplar ver. Gereksiz detay ekleme." },
+                        new { role = "system", content = "Sen burs otomasyonu konusunda uzman bir asistansın. Öğrenci burs başvurusu, gereklilikler, not ortalaması, gelir durumu, kardeş sayısı, sınıf, üniversite/fakülte/bölüm, başvuru durumu gibi konularda detaylı, gerekçeli ve açıklayıcı cevaplar ver.\nAnalizlerinde derinlik ve insani yorum kullan." },
                         new { role = "user", content = question }
                     },
-                    max_tokens = 400,
+                    max_tokens = 1000,
                     temperature = 0.5
                 };
 
@@ -136,7 +136,7 @@ Sadece bu dört maddeyi döndür; başka metin ekleme.";
 
                 var requestBody = new
                 {
-                    model = "llama-3.1-8b-instant",
+                    model = "llama-3.1-70b",
                     messages = new[]
                     {
                         new { role = "system", content = "Sen deneyimli, pozitif ve yapıcı bir burs değerlendirme uzmanısın. Öğrenci bilgilerini objektif, adil, detaylı ve YAPICI bir şekilde analiz edersin. Her zaman öğrenciyi destekleyici ve motive edici bir dil kullanırsın. Not ortalamasını 4.00 üzerinden doğru değerlendirirsin (3.00+ iyi, 2.50-2.99 orta, 2.50 altı düşük). Aile gelirini Türkiye şartlarına göre değerlendirirsin. Klasik sorulara verilen cevapları içerik kalitesi, samimiyet, detay seviyesi açısından derinlemesine analiz edersin. Olumsuz durumları bile pozitif ve yapıcı bir şekilde ifade edersin. Türkçe cevap verirsin. Asla sert, kırıcı veya umutsuzluk veren ifadeler kullanmazsın." },

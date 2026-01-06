@@ -1,0 +1,423 @@
+@{
+    ViewData["Title"] = "Burslar";
+}
+
+<!DOCTYPE html>
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>🎓 Burs Otomasyonu - Burslar Listesi</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4A00E0",
+                        "secondary": "#8E2DE2",
+                        "accent": "#C06FEF",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'gradient-x': 'gradient-x 5s ease infinite',
+                        'pop-in': 'pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'liquid-flow': 'liquidFlow 8s ease-in-out infinite alternate',
+                        'tilt-shaking': 'tilt-shaking 0.4s infinite',
+                        'energy-pulse': 'energyPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'pop-in': {
+                            '0%': { opacity: '0', transform: 'scale(0.9) translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'scale(1) translateY(0)' },
+                        },
+                        'shimmer': {
+                            'from': { backgroundPosition: '0 0' },
+                            'to': { backgroundPosition: '-200% 0' }
+                        },
+                        liquidFlow: {
+                             '0%': { backgroundPosition: '0% 50%' },
+                             '100%': { backgroundPosition: '100% 50%' }
+                        },
+                        energyPulse: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '.5' }
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .gradient-bg {
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #4A00E0);
+            background-size: 400% 400%;
+            animation: gradient-bg-anim 15s ease infinite
+        }
+        @@keyframes gradient-bg-anim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }.glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            border-left: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .glass-card:hover {
+            transform: translateY(-10px) rotateX(2deg) rotateY(2deg) scale(1.02);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 20px 50px rgba(142, 45, 226, 0.25), 0 0 0 2px rgba(142, 45, 226, 0.1);
+            border-color: rgba(142, 45, 226, 0.3);
+        }.holo-text {
+            background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #ff00cc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradient-x 4s linear infinite;
+        }.glass-search {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-search:focus-within {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 30px rgba(142, 45, 226, 0.15);
+        }.filter-pill {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+        }
+        .filter-pill:hover, .filter-pill.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #4A00E0;
+            border-color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3); 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5); 
+        }
+    </style>
+</head>
+<body class="font-display antialiased text-gray-800 gradient-bg min-h-screen flex flex-col overflow-x-hidden selection:bg-purple-200 selection:text-purple-900">
+<div class="fixed top-20 left-10 w-96 h-96 bg-purple-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-40 animate-float pointer-events-none"></div>
+<div class="fixed top-1/2 right-10 w-80 h-80 bg-blue-500 rounded-full mix-blend-overlay filter blur-[90px] opacity-40 animate-float-delayed pointer-events-none"></div>
+<div class="fixed -bottom-8 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-40 animate-pulse-slow pointer-events-none"></div>
+<nav class="w-full bg-white/5 backdrop-blur-xl border-b border-white/10 px-6 py-4 sticky top-0 z-50 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-300">
+<div class="max-w-[1400px] mx-auto flex items-center justify-between">
+<a href="/" class="flex items-center gap-3 group cursor-pointer">
+<div class="size-10 rounded-xl bg-gradient-to-br from-[#4A00E0] to-[#8E2DE2] text-white flex items-center justify-center shadow-lg group-hover:shadow-purple-400/50 group-hover:scale-110 transition-all duration-300">
+<span class="material-symbols-outlined text-[24px]">school</span>
+</div>
+<h2 class="text-white text-lg md:text-xl font-bold tracking-tight drop-shadow-md">Burs Otomasyonu</h2>
+</a>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium relative group" href="/">Ana Sayfa</a>
+<a class="text-white text-sm font-bold bg-white/20 border border-white/30 px-3 py-1 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.1)]" href="/Home/Burslar">Burslar</a>
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium relative group" href="/Bagis/BagisYap">Bağışçılar</a>
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium relative group" href="/Home/Hakkimizda">Hakkımızda</a>
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium relative group" href="/Home/Iletisim">İletişim</a>
+<div class="flex gap-3">
+<a href="/Home/Giris" class="flex items-center justify-center rounded-xl h-9 px-4 bg-white/10 text-white border border-white/30 hover:bg-white/20 text-sm font-bold transition-all shadow-sm backdrop-blur-sm">Giriş</a>
+<a href="/Home/BasvuruYap" class="flex items-center justify-center rounded-xl h-9 px-4 bg-white text-[#4A00E0] hover:bg-gray-100 text-sm font-bold transition-all shadow-md hover:shadow-lg">Kayıt Ol</a>
+</div>
+</div>
+<button class="md:hidden text-white">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</div>
+</nav>
+<main class="flex-grow relative z-10 px-4 py-8 md:py-12">
+<div class="max-w-[1400px] mx-auto space-y-10">
+<div class="text-center space-y-6 animate-pop-in relative">
+<h1 class="text-4xl md:text-6xl font-black text-white tracking-tight drop-shadow-lg mb-2">
+                    Hayallerine <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300">Işık Tut</span>
+</h1>
+<p class="text-white/70 text-lg md:text-xl max-w-2xl mx-auto font-light">
+                    Senin için en uygun burs programını keşfet ve geleceğini bugünden şekillendir.
+                </p>
+<div class="max-w-4xl mx-auto mt-8 p-2 rounded-2xl glass-search flex flex-col md:flex-row gap-2 items-center">
+<div class="relative flex-grow w-full">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 material-symbols-outlined">search</span>
+<input class="w-full bg-transparent border-none text-white placeholder-white/50 focus:ring-0 pl-12 pr-4 h-12 text-lg font-medium" placeholder="Burs ara (örn: Mühendislik, Sanat...)" type="text" id="searchInput"/>
+</div>
+<div class="h-8 w-px bg-white/20 hidden md:block"></div>
+<div class="flex gap-2 overflow-x-auto w-full md:w-auto p-1 pb-2 md:pb-1 no-scrollbar items-center">
+<button class="filter-pill active px-4 py-2 rounded-xl text-sm font-bold text-white whitespace-nowrap" data-filter="all">Tümü</button>
+<button class="filter-pill px-4 py-2 rounded-xl text-sm font-bold text-white whitespace-nowrap" data-filter="lisans">Lisans</button>
+<button class="filter-pill px-4 py-2 rounded-xl text-sm font-bold text-white whitespace-nowrap" data-filter="yuksek-lisans">Yüksek Lisans</button>
+<button class="filter-pill px-4 py-2 rounded-xl text-sm font-bold text-white whitespace-nowrap" data-filter="ihtiyac">İhtiyaç</button>
+<button class="filter-pill px-4 py-2 rounded-xl text-sm font-bold text-white whitespace-nowrap" data-filter="basari">Başarı</button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-2 pb-12" id="burslarGrid">
+<div class="glass-card rounded-[2rem] p-6 relative group flex flex-col h-full animate-pop-in" style="animation-delay: 0.1s;" data-category="basari lisans">
+<div class="absolute top-4 right-4">
+<span class="bg-green-100/80 text-green-700 text-xs font-black px-2 py-1 rounded-lg backdrop-blur-sm shadow-sm border border-green-200">AKTİF</span>
+</div>
+<div class="mb-4 relative">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+<span class="material-symbols-outlined text-white text-3xl group-hover:animate-pulse">school</span>
+</div>
+<div class="absolute -inset-2 bg-blue-500/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<h3 class="text-2xl font-bold holo-text mb-2">Genel Başarı Bursu</h3>
+<p class="text-gray-600 text-sm mb-4 leading-relaxed font-medium">
+                        Akademik başarısı yüksek ve liderlik potansiyeli taşıyan lisans öğrencileri için kapsamlı destek paketi.
+                    </p>
+<div class="mt-auto space-y-4">
+<div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">calendar_month</span>
+<span>Son Başvuru: 30 Eyl</span>
+</div>
+<a class="block w-full py-3 rounded-xl bg-gradient-to-r from-[#4A00E0] to-[#8E2DE2] text-white text-center font-bold shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 relative overflow-hidden transition-all group-hover:-translate-y-1" href="/Home/BasvuruYap">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                                Detayları Görüntüle
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+<div class="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+</a>
+</div>
+</div>
+<div class="glass-card rounded-[2rem] p-6 relative group flex flex-col h-full animate-pop-in" style="animation-delay: 0.2s;" data-category="ihtiyac lisans">
+<div class="absolute top-4 right-4">
+<span class="bg-orange-100/80 text-orange-700 text-xs font-black px-2 py-1 rounded-lg backdrop-blur-sm shadow-sm border border-orange-200">YENİ</span>
+</div>
+<div class="mb-4 relative">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+<span class="material-symbols-outlined text-white text-3xl group-hover:animate-pulse">volunteer_activism</span>
+</div>
+<div class="absolute -inset-2 bg-orange-500/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<h3 class="text-2xl font-bold holo-text mb-2">Gelecek Destek Fonu</h3>
+<p class="text-gray-600 text-sm mb-4 leading-relaxed font-medium">
+                        Maddi desteğe ihtiyaç duyan, hayalleri olan gençlerimiz için eğitimde fırsat eşitliği bursu.
+                    </p>
+<div class="mt-auto space-y-4">
+<div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">calendar_month</span>
+<span>Son Başvuru: 15 Eki</span>
+</div>
+<a class="block w-full py-3 rounded-xl bg-gradient-to-r from-[#4A00E0] to-[#8E2DE2] text-white text-center font-bold shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 relative overflow-hidden transition-all group-hover:-translate-y-1" href="/Home/BasvuruYap">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                                Detayları Görüntüle
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+<div class="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+</a>
+</div>
+</div>
+<div class="glass-card rounded-[2rem] p-6 relative group flex flex-col h-full animate-pop-in" style="animation-delay: 0.3s;" data-category="basari lisans">
+<div class="mb-4 relative">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+<span class="material-symbols-outlined text-white text-3xl group-hover:animate-pulse">terminal</span>
+</div>
+<div class="absolute -inset-2 bg-cyan-500/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<h3 class="text-2xl font-bold holo-text mb-2">Teknoloji Liderleri</h3>
+<p class="text-gray-600 text-sm mb-4 leading-relaxed font-medium">
+                        Yazılım, yapay zeka ve mühendislik alanlarında proje geliştiren öğrenciler için özel teknoloji bursu.
+                    </p>
+<div class="mt-auto space-y-4">
+<div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">calendar_month</span>
+<span>Son Başvuru: 1 Kas</span>
+</div>
+<a class="block w-full py-3 rounded-xl bg-gradient-to-r from-[#4A00E0] to-[#8E2DE2] text-white text-center font-bold shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 relative overflow-hidden transition-all group-hover:-translate-y-1" href="/Home/BasvuruYap">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                                Detayları Görüntüle
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+<div class="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+</a>
+</div>
+</div>
+<div class="glass-card rounded-[2rem] p-6 relative group flex flex-col h-full animate-pop-in" style="animation-delay: 0.4s;" data-category="basari lisans">
+<div class="mb-4 relative">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-300">
+<span class="material-symbols-outlined text-white text-3xl group-hover:animate-pulse">palette</span>
+</div>
+<div class="absolute -inset-2 bg-pink-500/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<h3 class="text-2xl font-bold holo-text mb-2">Sanat ve Tasarım</h3>
+<p class="text-gray-600 text-sm mb-4 leading-relaxed font-medium">
+                        Güzel sanatlar, müzik ve tasarım fakültelerinde okuyan yaratıcı zihinlere özel burs imkanı.
+                    </p>
+<div class="mt-auto space-y-4">
+<div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">calendar_month</span>
+<span>Son Başvuru: 10 Eki</span>
+</div>
+<a class="block w-full py-3 rounded-xl bg-gradient-to-r from-[#4A00E0] to-[#8E2DE2] text-white text-center font-bold shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 relative overflow-hidden transition-all group-hover:-translate-y-1" href="/Home/BasvuruYap">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                                Detayları Görüntüle
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+<div class="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+</a>
+</div>
+</div>
+<div class="glass-card rounded-[2rem] p-6 relative group flex flex-col h-full animate-pop-in" style="animation-delay: 0.5s;" data-category="basari lisans">
+<div class="mb-4 relative">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+<span class="material-symbols-outlined text-white text-3xl group-hover:animate-pulse">fitness_center</span>
+</div>
+<div class="absolute -inset-2 bg-emerald-500/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<h3 class="text-2xl font-bold holo-text mb-2">Milli Sporcu Bursu</h3>
+<p class="text-gray-600 text-sm mb-4 leading-relaxed font-medium">
+                        Ulusal veya uluslararası müsabakalarda başarı göstermiş sporcu öğrencilerimiz için.
+                    </p>
+<div class="mt-auto space-y-4">
+<div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">calendar_month</span>
+<span>Son Başvuru: Süresiz</span>
+</div>
+<a class="block w-full py-3 rounded-xl bg-gradient-to-r from-[#4A00E0] to-[#8E2DE2] text-white text-center font-bold shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 relative overflow-hidden transition-all group-hover:-translate-y-1" href="/Home/BasvuruYap">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                                Detayları Görüntüle
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+<div class="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+</a>
+</div>
+</div>
+<div class="glass-card rounded-[2rem] p-6 relative group flex flex-col h-full animate-pop-in" style="animation-delay: 0.6s;" data-category="basari yuksek-lisans">
+<div class="absolute top-4 right-4">
+<span class="bg-purple-100/80 text-purple-700 text-xs font-black px-2 py-1 rounded-lg backdrop-blur-sm shadow-sm border border-purple-200">DOKTORA</span>
+</div>
+<div class="mb-4 relative">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+<span class="material-symbols-outlined text-white text-3xl group-hover:animate-pulse">science</span>
+</div>
+<div class="absolute -inset-2 bg-violet-500/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<h3 class="text-2xl font-bold holo-text mb-2">Araştırma ve İnovasyon</h3>
+<p class="text-gray-600 text-sm mb-4 leading-relaxed font-medium">
+                        Yüksek lisans ve doktora düzeyinde bilimsel araştırma yürüten akademisyen adayları için.
+                    </p>
+<div class="mt-auto space-y-4">
+<div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">calendar_month</span>
+<span>Son Başvuru: 20 Kas</span>
+</div>
+<a class="block w-full py-3 rounded-xl bg-gradient-to-r from-[#4A00E0] to-[#8E2DE2] text-white text-center font-bold shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 relative overflow-hidden transition-all group-hover:-translate-y-1" href="/Home/BasvuruYap">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                                Detayları Görüntüle
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+<div class="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+</a>
+</div>
+</div>
+</div>
+<div class="flex justify-center pb-8 animate-pop-in">
+<button class="px-8 py-3 rounded-full bg-white/10 border border-white/30 text-white font-bold hover:bg-white/20 backdrop-blur-sm transition-all flex items-center gap-2 group" id="loadMoreBtn">
+                    Daha Fazla Göster
+                    <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform">expand_more</span>
+</button>
+</div>
+</div>
+</main>
+<footer class="bg-black/20 backdrop-blur-md border-t border-white/10 py-6 mt-auto relative z-10 text-white">
+<div class="max-w-[1280px] mx-auto px-8 text-center text-white/70 text-sm font-medium">
+<p>© 2024 Öğrenci Burs Yönetim Sistemi. Gelecek seninle aydınlanacak. 🎓</p>
+</div>
+</footer>
+
+<script>
+    // Filter functionality
+    const filterButtons = document.querySelectorAll('.filter-pill');
+    const burslarGrid = document.getElementById('burslarGrid');
+    const searchInput = document.getElementById('searchInput');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const filter = this.getAttribute('data-filter');
+            filterBurslar(filter);
+        });
+    });
+    
+    function filterBurslar(filter) {
+        const cards = burslarGrid.querySelectorAll('.glass-card');
+        cards.forEach(card => {
+            const categories = card.getAttribute('data-category');
+            if (filter === 'all' || categories.includes(filter)) {
+                card.style.display = 'flex';
+                card.style.animation = 'pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const cards = burslarGrid.querySelectorAll('.glass-card');
+        
+        cards.forEach(card => {
+            const title = card.querySelector('h3').textContent.toLowerCase();
+            const description = card.querySelector('p').textContent.toLowerCase();
+            
+            if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+</body></html>
+

@@ -500,29 +500,78 @@ namespace BursOtomasyon.Desktop.Services
             if (string.IsNullOrWhiteSpace(universite))
                 return null;
 
-            // Önce tam eşleşme dene
-            if (_universiteSehirMap.TryGetValue(universite.Trim(), out string? sehir))
+            var universiteTrim = universite.Trim();
+            var universiteLower = universiteTrim.ToLowerInvariant();
+
+            // 1. Önce tam eşleşme dene
+            if (_universiteSehirMap.TryGetValue(universiteTrim, out string? sehir))
             {
                 return sehir;
             }
 
-            // Kısmi eşleşme dene (üniversite adında şehir adı geçiyorsa)
+            // 2. Üniversite adında şehir adı geçiyor mu kontrol et
+            foreach (var kvp in _sehirKatsayiMap)
+            {
+                var sehirAdi = kvp.Key.ToLowerInvariant();
+                if (universiteLower.Contains(sehirAdi))
+                {
+                    return kvp.Key;
+                }
+            }
+
+            // 3. Kısmi eşleşme dene (map'teki üniversite adı içinde geçiyorsa)
             foreach (var kvp in _universiteSehirMap)
             {
-                if (kvp.Key.Contains(universite.Trim(), StringComparison.OrdinalIgnoreCase) ||
-                    universite.Trim().Contains(kvp.Key, StringComparison.OrdinalIgnoreCase))
+                var keyLower = kvp.Key.ToLowerInvariant();
+                if (keyLower.Contains(universiteLower) || universiteLower.Contains(keyLower))
                 {
                     return kvp.Value;
                 }
             }
 
-            // Şehir adı direkt girilmiş olabilir
-            if (_sehirKatsayiMap.ContainsKey(universite.Trim()))
+            // 4. Şehir adı direkt girilmiş olabilir
+            if (_sehirKatsayiMap.ContainsKey(universiteTrim))
             {
-                return universite.Trim();
+                return universiteTrim;
             }
 
-            // Bulunamazsa varsayılan olarak 1.00 katsayılı şehir döndür
+            // 5. Büyük şehirlerin farklı yazılışlarını kontrol et
+            if (universiteLower.Contains("istanbul") || universiteLower.Contains("ist"))
+                return "İstanbul";
+            if (universiteLower.Contains("ankara") || universiteLower.Contains("ank"))
+                return "Ankara";
+            if (universiteLower.Contains("izmir"))
+                return "İzmir";
+            if (universiteLower.Contains("bursa"))
+                return "Bursa";
+            if (universiteLower.Contains("antalya"))
+                return "Antalya";
+            if (universiteLower.Contains("adana"))
+                return "Adana";
+            if (universiteLower.Contains("konya"))
+                return "Konya";
+            if (universiteLower.Contains("gaziantep"))
+                return "Gaziantep";
+            if (universiteLower.Contains("kayseri"))
+                return "Kayseri";
+            if (universiteLower.Contains("eskisehir") || universiteLower.Contains("eskişehir"))
+                return "Eskişehir";
+            if (universiteLower.Contains("trabzon"))
+                return "Trabzon";
+            if (universiteLower.Contains("samsun"))
+                return "Samsun";
+            if (universiteLower.Contains("erzurum"))
+                return "Erzurum";
+            if (universiteLower.Contains("elazig") || universiteLower.Contains("elazığ"))
+                return "Elazığ";
+            if (universiteLower.Contains("diyarbakir") || universiteLower.Contains("diyarbakır"))
+                return "Diyarbakır";
+            if (universiteLower.Contains("malatya"))
+                return "Malatya";
+            if (universiteLower.Contains("van"))
+                return "Van";
+
+            // Bulunamazsa null döndür (varsayılan 1.00 katsayı kullanılacak)
             return null;
         }
 

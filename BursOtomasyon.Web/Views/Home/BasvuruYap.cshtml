@@ -4,943 +4,451 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html class="light" lang="tr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>🎓 Burs Otomasyonu</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4A00E0",
+                        "secondary": "#8E2DE2",
+                        "accent": "#C06FEF",
+                        "holographic-start": "#ff00cc",
+                        "holographic-end": "#333399",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "input": ["Segoe UI", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'pop-in': 'pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'liquid-flow': 'liquidFlow 8s ease-in-out infinite alternate',
+                        'galaxy-burst': 'galaxyBurst 0.8s ease-out forwards',
+                        'neon-error': 'neonError 0.5s ease-in-out 3',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'pop-in': {
+                            '0%': { opacity: '0', transform: 'scale(0.8)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        'shimmer': {
+                            'from': { backgroundPosition: '0 0' },
+                            'to': { backgroundPosition: '-200% 0' }
+                        },
+                        liquidFlow: {
+                             '0%': { backgroundPosition: '0% 50%' },
+                             '100%': { backgroundPosition: '100% 50%' }
+                        },
+                        galaxyBurst: {
+                            '0%': { transform: 'scale(0) rotate(0deg)', opacity: '0' },
+                            '50%': { opacity: '1' },
+                            '100%': { transform: 'scale(1.5) rotate(180deg)', opacity: '0' }
+                        },
+                        neonError: {
+                            '0%, 100%': { boxShadow: '0 0 10px #ff0000, 0 0 20px #ff0000' },
+                            '50%': { boxShadow: '0 0 20px #ff0000, 0 0 40px #ff0000' }
+                        }
+                    }
+                },
+            },
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .gradient-bg {
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #4A00E0);
+            background-size: 400% 400%;
+            animation: gradient-bg-anim 15s ease infinite
         }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            min-height: 100vh;
+        @@keyframes gradient-bg-anim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        .neo-glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            border-left: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            box-shadow: 20px 20px 50px rgba(0,0,0,0.1), 
+                        -5px -5px 30px rgba(255,255,255,0.8) inset;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
-
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 2em;
+        .liquid-input {
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
         }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
+        .liquid-input:hover, .liquid-input:focus {
+            background: rgba(255, 255, 255, 0.8);
+            border-image: linear-gradient(45deg, #4A00E0, #8E2DE2, #C06FEF) 1;
+            box-shadow: 0 0 15px rgba(142, 45, 226, 0.2);
         }
-
-        .back-link:hover {
-            text-decoration: underline;
+        .ai-pattern-bg:focus {
+            background-image: radial-gradient(#4A00E0 0.5px, transparent 0.5px), radial-gradient(#8E2DE2 0.5px, #ffffff 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            background-color: rgba(255,255,255,0.9);
         }
-
-        .form-group {
-            margin-bottom: 20px;
+        .holo-checkbox:checked {
+            background-image: linear-gradient(135deg, #4A00E0, #C06FEF);
+            border-color: transparent;
         }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: 500;
+        .progress-liquid {
+            background: linear-gradient(90deg, #4A00E0, #8E2DE2, #C06FEF, #4A00E0);
+            background-size: 200% 100%;
+            animation: liquid-flow 2s linear infinite;
         }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="date"],
-        input[type="number"],
-        input[type="file"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-            font-family: inherit;
-        }
-
-        input[type="tel"] {
-            letter-spacing: 0.5px;
-        }
-
-        input[type="tel"]:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .universite-dropdown-container {
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(74, 0, 224, 0.2), transparent);
+            margin: 3rem 0;
             position: relative;
-            width: 100%;
         }
-        
-        .universite-dropdown {
+        .section-divider::after {
+            content: '';
             position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 2px solid #667eea;
-            border-radius: 8px;
-            margin-top: 5px;
-            max-height: 300px;
-            overflow-y: auto;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
-            z-index: 1000;
-            display: none;
-            animation: slideDown 0.3s ease-out;
-        }
-        
-        .universite-dropdown.show {
-            display: block;
-        }
-        
-        @@keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .universite-option {
-            padding: 12px 15px;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            transition: all 0.2s ease;
-            font-size: 14px;
-        }
-        
-        .universite-option:last-child {
-            border-bottom: none;
-        }
-        
-        .universite-option:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .universite-option.highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .dropdown-toggle {
-            position: absolute;
-            right: 12px;
+            left: 50%;
             top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #667eea;
-            font-size: 18px;
-            transition: transform 0.3s ease;
-        }
-        
-        .dropdown-toggle.rotated {
-            transform: translateY(-50%) rotate(180deg);
-        }
-        
-        .universite-input-wrapper {
-            position: relative;
-        }
-        
-        .universite-input-wrapper input {
-            padding-right: 40px;
-        }
-
-        .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .field-validation-error {
-            color: #dc3545;
-            font-size: 12px;
-            margin-top: 5px;
-            display: block;
-        }
-
-        .full-width {
-            grid-column: 1 / -1;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #C06FEF;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #C06FEF;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <a href="/" class="back-link">← Ana Sayfaya Dön</a>
-        <h1>🎓 Burs Başvuru Formu</h1>
-
-        @if (ViewBag.Success != null && ViewBag.Success)
-        {
-            <div class="alert alert-success">
-                <strong>Başarılı!</strong> @ViewBag.Message
-            </div>
-        }
-
-        @if (ViewBag.Error != null)
-        {
-            <div class="alert alert-error">
-                <strong>Hata!</strong> @ViewBag.Error
-            </div>
-        }
-
-        <form asp-action="BasvuruYap" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="Ad">Ad *</label>
-                    <input asp-for="Ad" required />
-                    <span asp-validation-for="Ad" class="field-validation-error"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Soyad">Soyad *</label>
-                    <input asp-for="Soyad" required />
-                    <span asp-validation-for="Soyad" class="field-validation-error"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="TC">TC Kimlik No *</label>
-                    <input asp-for="TC" maxlength="11" required />
-                    <span asp-validation-for="TC" class="field-validation-error"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="DogumTarihi">Doğum Tarihi *</label>
-                    <input asp-for="DogumTarihi" type="date" required />
-                    <span asp-validation-for="DogumTarihi" class="field-validation-error"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="Telefon">Telefon</label>
-                    <input asp-for="Telefon" type="tel" id="telefonInput" placeholder="0 (5XX) XXX XX XX" pattern="[0-9\s\(\)\-]+" />
-                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Format: 0 (5XX) XXX XX XX</small>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Email">E-Posta</label>
-                    <input asp-for="Email" type="email" />
-                    <span asp-validation-for="Email" class="field-validation-error"></span>
-                </div>
-            </div>
-
-            <div class="form-group full-width">
-                <label asp-for="Universite">Üniversite *</label>
-                <div class="universite-dropdown-container">
-                    <div class="universite-input-wrapper">
-                        <input asp-for="Universite" required autocomplete="off" id="universiteInput" />
-                        <span class="dropdown-toggle" id="dropdownToggle">▼</span>
-                    </div>
-                    <div class="universite-dropdown" id="universiteDropdown">
-                        @if (ViewBag.UniversiteListesi != null)
-                        {
-                            @foreach (var universite in (List<string>)ViewBag.UniversiteListesi)
-                            {
-                                <div class="universite-option" data-value="@universite">@universite</div>
-                            }
-                        }
-                    </div>
-                </div>
-                <span asp-validation-for="Universite" class="field-validation-error"></span>
-                <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Listeden seçebilir veya manuel olarak yazabilirsiniz.</small>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="Fakulte">Fakülte</label>
-                    <div class="universite-dropdown-container">
-                        <div class="universite-input-wrapper">
-                            <input asp-for="Fakulte" autocomplete="off" id="fakulteInput" />
-                            <span class="dropdown-toggle" id="fakulteDropdownToggle">▼</span>
-                        </div>
-                        <div class="universite-dropdown" id="fakulteDropdown">
-                            @if (ViewBag.FakulteListesi != null)
-                            {
-                                @foreach (var fakulte in (List<string>)ViewBag.FakulteListesi)
-                                {
-                                    <div class="universite-option" data-value="@fakulte">@fakulte</div>
-                                }
-                            }
-                        </div>
-                    </div>
-                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Listeden seçebilir veya manuel olarak yazabilirsiniz.</small>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Bolum">Bölüm *</label>
-                    <div class="universite-dropdown-container">
-                        <div class="universite-input-wrapper">
-                            <input asp-for="Bolum" required autocomplete="off" id="bolumInput" />
-                            <span class="dropdown-toggle" id="bolumDropdownToggle">▼</span>
-                        </div>
-                        <div class="universite-dropdown" id="bolumDropdown">
-                            @if (ViewBag.BolumListesi != null)
-                            {
-                                @foreach (var bolum in (List<string>)ViewBag.BolumListesi)
-                                {
-                                    <div class="universite-option" data-value="@bolum">@bolum</div>
-                                }
-                            }
-                        </div>
-                    </div>
-                    <span asp-validation-for="Bolum" class="field-validation-error"></span>
-                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">Listeden seçebilir veya manuel olarak yazabilirsiniz.</small>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="Sinif">Sınıf *</label>
-                    <select asp-for="Sinif" required>
-                        <option value="">Seçiniz</option>
-                        <option value="Hazırlık">Hazırlık</option>
-                        <option value="1">1. Sınıf</option>
-                        <option value="2">2. Sınıf</option>
-                        <option value="3">3. Sınıf</option>
-                        <option value="4">4. Sınıf</option>
-                    </select>
-                    <span asp-validation-for="Sinif" class="field-validation-error"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="NotOrtalamasi">Not Ortalaması (0.00-4.00) *</label>
-                    <input asp-for="NotOrtalamasi" type="number" step="0.01" min="0" max="4" required />
-                    <span asp-validation-for="NotOrtalamasi" class="field-validation-error"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="KardesSayisi">Kardeş Sayısı *</label>
-                    <select asp-for="KardesSayisi" required>
-                        <option value="">Seçiniz</option>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="4+">4+</option>
-                    </select>
-                    <span asp-validation-for="KardesSayisi" class="field-validation-error"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="AileGeliri">Aile Aylık Geliri (TL) *</label>
-                    <input asp-for="AileGeliri" type="number" step="0.01" min="0" required />
-                    <span asp-validation-for="AileGeliri" class="field-validation-error"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="AnneMeslek">Anne Meslek</label>
-                    <input asp-for="AnneMeslek" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="BabaMeslek">Baba Meslek</label>
-                    <input asp-for="BabaMeslek" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group full-width">
-                    <label asp-for="ProfilFoto">Profil Fotoğrafı (isteğe bağlı)</label>
-                    <input asp-for="ProfilFoto" type="file" accept="image/*" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group full-width">
-                    <label asp-for="KlasikSoru1Cevap"></label>
-                    <textarea asp-for="KlasikSoru1Cevap" rows="3"></textarea>
-                    <span asp-validation-for="KlasikSoru1Cevap" class="field-validation-error"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group full-width">
-                    <label asp-for="KlasikSoru2Cevap"></label>
-                    <textarea asp-for="KlasikSoru2Cevap" rows="3"></textarea>
-                    <span asp-validation-for="KlasikSoru2Cevap" class="field-validation-error"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group full-width">
-                    <label asp-for="KlasikSoru3Cevap"></label>
-                    <textarea asp-for="KlasikSoru3Cevap" rows="3"></textarea>
-                    <span asp-validation-for="KlasikSoru3Cevap" class="field-validation-error"></span>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-submit">Başvuruyu Gönder</button>
-        </form>
+<body class="font-display antialiased text-gray-800 gradient-bg min-h-screen flex flex-col overflow-x-hidden selection:bg-purple-200 selection:text-purple-900">
+<div class="fixed top-20 left-10 w-96 h-96 bg-purple-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-40 animate-float pointer-events-none"></div>
+<div class="fixed top-1/2 right-10 w-80 h-80 bg-blue-500 rounded-full mix-blend-overlay filter blur-[90px] opacity-40 animate-blob animation-delay-2000 pointer-events-none"></div>
+<div class="fixed -bottom-8 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-40 animate-blob animation-delay-4000 pointer-events-none"></div>
+<nav class="w-full bg-white/5 backdrop-blur-xl border-b border-white/10 px-6 py-4 sticky top-0 z-50 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-300">
+<div class="max-w-[1280px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3 group cursor-pointer">
+<div class="size-10 rounded-xl bg-gradient-to-br from-[#4A00E0] to-[#8E2DE2] text-white flex items-center justify-center shadow-lg group-hover:shadow-purple-400/50 group-hover:scale-110 transition-all duration-300">
+<span class="material-symbols-outlined text-[24px]">school</span>
+</div>
+<h2 class="text-white text-lg md:text-xl font-bold tracking-tight drop-shadow-md">Burs Otomasyonu</h2>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium relative group" href="/">Ana Sayfa</a>
+<a class="text-white text-sm font-bold bg-white/20 border border-white/30 px-3 py-1 rounded-full backdrop-blur-sm" href="/Home/Burslar">Burslar</a>
+<a class="text-white/80 hover:text-white transition-colors text-sm font-medium relative group" href="/Bagis/BagisYap">Bağışçılar</a>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-xl h-9 px-4 bg-white/10 text-white border border-white/30 hover:bg-white/20 text-sm font-bold transition-all shadow-sm backdrop-blur-sm">Giriş</button>
+<button class="flex items-center justify-center rounded-xl h-9 px-4 bg-white text-[#4A00E0] hover:bg-gray-100 text-sm font-bold transition-all shadow-md hover:shadow-lg">Kayıt Ol</button>
+</div>
+</div>
+</div>
+</nav>
+<main class="flex-grow flex items-center justify-center p-4 md:p-8 lg:p-12 relative z-10">
+<div class="neo-glass-panel w-full max-w-4xl p-8 md:p-12 flex flex-col gap-6 my-4 relative animate-pop-in">
+@if (ViewBag.Success != null && ViewBag.Success)
+{
+    <div class="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-[24px]" id="galaxy-success">
+        <div class="text-center relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 blur-3xl opacity-50 animate-pulse"></div>
+            <span class="material-symbols-outlined text-9xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] animate-bounce relative z-10">verified</span>
+            <h2 class="text-4xl font-black text-white mt-4 relative z-10 drop-shadow-lg">Başvurunuz Başarıyla Alındı!</h2>
+            <p class="text-white/80 mt-2 relative z-10">@ViewBag.Message</p>
+        </div>
     </div>
+}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-    <script>
-        (function() {
-            const input = document.getElementById('universiteInput');
-            const dropdown = document.getElementById('universiteDropdown');
-            const toggle = document.getElementById('dropdownToggle');
-            const options = dropdown.querySelectorAll('.universite-option');
-            let currentHighlight = -1;
-            
-            // Dropdown toggle butonu
-            toggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                dropdown.classList.toggle('show');
-                toggle.classList.toggle('rotated');
-            });
-            
-            // Input'a tıklandığında dropdown'u aç
-            input.addEventListener('focus', function() {
-                filterOptions();
-                dropdown.classList.add('show');
-                toggle.classList.add('rotated');
-            });
-            
-            // Input'a yazıldığında filtrele
-            input.addEventListener('input', function() {
-                filterOptions();
-                dropdown.classList.add('show');
-                toggle.classList.add('rotated');
-                currentHighlight = -1;
-            });
-            
-            // Option'a tıklandığında seç
-            options.forEach(function(option) {
-                option.addEventListener('click', function() {
-                    input.value = this.getAttribute('data-value');
-                    dropdown.classList.remove('show');
-                    toggle.classList.remove('rotated');
-                    input.focus();
-                });
-            });
-            
-            // Klavye navigasyonu
-            input.addEventListener('keydown', function(e) {
-                if (!dropdown.classList.contains('show')) {
-                    if (e.key === 'ArrowDown' || e.key === 'Enter') {
-                        e.preventDefault();
-                        filterOptions();
-                        dropdown.classList.add('show');
-                        toggle.classList.add('rotated');
-                        currentHighlight = 0;
-                        highlightOption(currentHighlight);
-                    }
-                    return;
-                }
-                
-                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
-                
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    currentHighlight = (currentHighlight + 1) % visibleOptions.length;
-                    highlightOption(currentHighlight);
-                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    currentHighlight = currentHighlight <= 0 ? visibleOptions.length - 1 : currentHighlight - 1;
-                    highlightOption(currentHighlight);
-                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (currentHighlight >= 0 && visibleOptions[currentHighlight]) {
-                        visibleOptions[currentHighlight].click();
-                    }
-                } else if (e.key === 'Escape') {
-                    dropdown.classList.remove('show');
-                    toggle.classList.remove('rotated');
-                    currentHighlight = -1;
-                }
-            });
-            
-            // Dışarı tıklandığında kapat
-            document.addEventListener('click', function(e) {
-                if (!input.contains(e.target) && !dropdown.contains(e.target) && !toggle.contains(e.target)) {
-                    dropdown.classList.remove('show');
-                    toggle.classList.remove('rotated');
-                    currentHighlight = -1;
-                }
-            });
-            
-            function filterOptions() {
-                const searchTerm = input.value.toLowerCase();
-                let visibleCount = 0;
-                
-                options.forEach(function(option) {
-                    const text = option.textContent.toLowerCase();
-                    if (text.includes(searchTerm)) {
-                        option.style.display = 'block';
-                        visibleCount++;
-                    } else {
-                        option.style.display = 'none';
-                    }
-                });
-                
-                // Eğer hiç sonuç yoksa göster
-                if (visibleCount === 0 && searchTerm === '') {
-                    options.forEach(function(option) {
-                        option.style.display = 'block';
-                    });
-                }
-            }
-            
-            function highlightOption(index) {
-                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
-                visibleOptions.forEach(function(opt, i) {
-                    if (i === index) {
-                        opt.classList.add('highlight');
-                    } else {
-                        opt.classList.remove('highlight');
-                    }
-                });
-            }
-        })();
+@if (ViewBag.Error != null)
+{
+    <div class="absolute top-6 right-6 bg-red-500/90 border border-red-400 text-white px-6 py-4 rounded-2xl backdrop-blur-md z-50 shadow-[0_0_20px_rgba(239,68,68,0.6)] animate-pulse" role="alert">
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-white text-3xl">error</span>
+            <div>
+                <strong class="font-bold block text-lg">Dikkat!</strong>
+                <span class="text-sm opacity-90">@ViewBag.Error</span>
+            </div>
+        </div>
+    </div>
+}
 
-        // Fakülte Dropdown
-        (function() {
-            const input = document.getElementById('fakulteInput');
-            const dropdown = document.getElementById('fakulteDropdown');
-            const toggle = document.getElementById('fakulteDropdownToggle');
-            const options = dropdown.querySelectorAll('.universite-option');
-            let currentHighlight = -1;
-            
-            toggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                dropdown.classList.toggle('show');
-                toggle.classList.toggle('rotated');
-            });
-            
-            input.addEventListener('focus', function() {
-                filterOptions();
-                dropdown.classList.add('show');
-                toggle.classList.add('rotated');
-            });
-            
-            input.addEventListener('input', function() {
-                filterOptions();
-                dropdown.classList.add('show');
-                toggle.classList.add('rotated');
-                currentHighlight = -1;
-            });
-            
-            options.forEach(function(option) {
-                option.addEventListener('click', function() {
-                    input.value = this.getAttribute('data-value');
-                    dropdown.classList.remove('show');
-                    toggle.classList.remove('rotated');
-                    input.focus();
-                });
-            });
-            
-            input.addEventListener('keydown', function(e) {
-                if (!dropdown.classList.contains('show')) {
-                    if (e.key === 'ArrowDown' || e.key === 'Enter') {
-                        e.preventDefault();
-                        filterOptions();
-                        dropdown.classList.add('show');
-                        toggle.classList.add('rotated');
-                        currentHighlight = 0;
-                        highlightOption(currentHighlight);
-                    }
-                    return;
-                }
-                
-                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
-                
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    currentHighlight = (currentHighlight + 1) % visibleOptions.length;
-                    highlightOption(currentHighlight);
-                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    currentHighlight = currentHighlight <= 0 ? visibleOptions.length - 1 : currentHighlight - 1;
-                    highlightOption(currentHighlight);
-                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (currentHighlight >= 0 && visibleOptions[currentHighlight]) {
-                        visibleOptions[currentHighlight].click();
-                    }
-                } else if (e.key === 'Escape') {
-                    dropdown.classList.remove('show');
-                    toggle.classList.remove('rotated');
-                    currentHighlight = -1;
-                }
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!input.contains(e.target) && !dropdown.contains(e.target) && !toggle.contains(e.target)) {
-                    dropdown.classList.remove('show');
-                    toggle.classList.remove('rotated');
-                    currentHighlight = -1;
-                }
-            });
-            
-            function filterOptions() {
-                const searchTerm = input.value.toLowerCase();
-                let visibleCount = 0;
-                
-                options.forEach(function(option) {
-                    const text = option.textContent.toLowerCase();
-                    if (text.includes(searchTerm)) {
-                        option.style.display = 'block';
-                        visibleCount++;
-                    } else {
-                        option.style.display = 'none';
-                    }
-                });
-                
-                if (visibleCount === 0 && searchTerm === '') {
-                    options.forEach(function(option) {
-                        option.style.display = 'block';
-                    });
-                }
-            }
-            
-            function highlightOption(index) {
-                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
-                visibleOptions.forEach(function(opt, i) {
-                    if (i === index) {
-                        opt.classList.add('highlight');
-                    } else {
-                        opt.classList.remove('highlight');
-                    }
-                });
-            }
-        })();
+<div class="text-center space-y-2 pb-6 border-b border-white/30">
+<h1 class="text-3xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#4A00E0] via-[#8E2DE2] to-[#C06FEF] tracking-tight pb-1 drop-shadow-sm">Burs Başvuru Formu</h1>
+<p class="text-gray-600 font-medium">Tüm bilgileri eksiksiz doldurarak hayallerine ulaş.</p>
+</div>
+<form asp-action="BasvuruYap" method="post" enctype="multipart/form-data" class="space-y-8" id="bursForm">
+<div>
+<h3 class="flex items-center gap-3 text-xl font-bold text-[#4A00E0] mb-6">
+<span class="material-symbols-outlined bg-purple-100 p-2 rounded-lg shadow-sm">face</span>
+                        Kişisel Bilgiler &amp; Fotoğraf
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+<div class="col-span-1 flex flex-col items-center justify-start space-y-4 relative">
+<label class="text-sm font-bold text-gray-700 w-full text-left ml-1">Profil Fotoğrafı *</label>
+<div class="relative group/upload w-full aspect-square max-w-[200px]">
+<div class="w-full h-full rounded-full border-2 border-dashed border-[#4A00E0] bg-white/40 flex items-center justify-center cursor-pointer hover:bg-white/60 transition-all shadow-inner overflow-hidden relative" id="photo-preview-container">
+<div class="text-center p-4">
+<span class="material-symbols-outlined text-4xl text-[#4A00E0] group-hover/upload:scale-110 transition-transform mb-2">add_a_photo</span>
+<p class="text-xs text-gray-500 font-medium">Sürükle &amp; Bırak</p>
+</div>
+<img class="absolute inset-0 w-full h-full object-cover hidden" id="photo-preview-img"/>
+<div class="absolute inset-0 hidden bg-white/80 flex items-center justify-center backdrop-blur-[2px]" id="photo-loading">
+<svg class="animate-spin h-10 w-10 text-purple-600" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor"></path>
+</svg>
+</div>
+</div>
+<input asp-for="ProfilFoto" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" id="file-upload" type="file"/>
+<div class="hidden absolute -bottom-4 left-1/2 -translate-x-1/2 bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold shadow-sm whitespace-nowrap animate-pop-in items-center gap-1" id="upload-success-msg">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                                    Yüklendi!
+                                </div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-2 space-y-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="Ad">Ad *</label>
+<input asp-for="Ad" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" placeholder="Adın" type="text" required />
+<span asp-validation-for="Ad" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="Soyad">Soyad *</label>
+<input asp-for="Soyad" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" placeholder="Soyadın" type="text" required />
+<span asp-validation-for="Soyad" class="text-red-500 text-sm"></span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="TC">TC Kimlik No *</label>
+<input asp-for="TC" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0 tracking-wider font-mono" maxlength="11" placeholder="___________" type="text" required />
+<span asp-validation-for="TC" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="DogumTarihi">Doğum Tarihi *</label>
+<input asp-for="DogumTarihi" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" type="date" required />
+<span asp-validation-for="DogumTarihi" class="text-red-500 text-sm"></span>
+</div>
+</div>
+</div>
+</div>
+<div class="section-divider"></div>
+<div>
+<h3 class="flex items-center gap-3 text-xl font-bold text-[#8E2DE2] mb-6">
+<span class="material-symbols-outlined bg-purple-100 p-2 rounded-lg shadow-sm">contact_mail</span>
+                        İletişim Bilgileri
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="Email">E-posta *</label>
+<div class="relative">
+<span class="absolute left-4 top-3 text-gray-400 material-symbols-outlined text-[20px]">alternate_email</span>
+<input asp-for="Email" class="w-full rounded-xl liquid-input h-12 pl-12 pr-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" placeholder="iletisim@mail.com" type="email" required />
+</div>
+<span asp-validation-for="Email" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="Telefon">Telefon *</label>
+<div class="relative">
+<span class="absolute left-4 top-3 text-gray-400 material-symbols-outlined text-[20px]">phone_iphone</span>
+<input asp-for="Telefon" class="w-full rounded-xl liquid-input h-12 pl-12 pr-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" placeholder="(5XX) ..." type="tel"/>
+</div>
+<span asp-validation-for="Telefon" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-1 md:col-span-2">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1">Açık Adres</label>
+<textarea class="w-full rounded-xl liquid-input p-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0 resize-none" placeholder="Mahalle, Sokak, No..." rows="2"></textarea>
+</div>
+</div>
+</div>
+<div class="section-divider"></div>
+<div>
+<h3 class="flex items-center gap-3 text-xl font-bold text-[#C06FEF] mb-6">
+<span class="material-symbols-outlined bg-purple-100 p-2 rounded-lg shadow-sm">school</span>
+                        Akademik Bilgiler
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1 md:col-span-2">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="Universite">Üniversite *</label>
+<div class="relative group">
+<input asp-for="Universite" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" list="universities" placeholder="Üniversite ara..." required />
+<span class="absolute right-4 top-3 text-gray-400 group-hover:text-[#8E2DE2] transition-colors material-symbols-outlined">search</span>
+<datalist id="universities">
+@if (ViewBag.UniversiteListesi != null)
+{
+    @foreach (var uni in (List<string>)ViewBag.UniversiteListesi)
+    {
+        <option value="@uni">@uni</option>
+    }
+}
+</datalist>
+</div>
+<span asp-validation-for="Universite" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="Fakulte">Fakülte *</label>
+<div class="relative group">
+<input asp-for="Fakulte" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" list="faculties" placeholder="Seçiniz..." required />
+<span class="absolute right-4 top-3 text-gray-400 group-hover:text-[#8E2DE2] transition-colors material-symbols-outlined">domain</span>
+<datalist id="faculties">
+@if (ViewBag.FakulteListesi != null)
+{
+    @foreach (var fak in (List<string>)ViewBag.FakulteListesi)
+    {
+        <option value="@fak">@fak</option>
+    }
+}
+</datalist>
+</div>
+<span asp-validation-for="Fakulte" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="Bolum">Bölüm *</label>
+<div class="relative group">
+<input asp-for="Bolum" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" list="departments" placeholder="Seçiniz..." required />
+<span class="absolute right-4 top-3 text-gray-400 group-hover:text-[#8E2DE2] transition-colors material-symbols-outlined">menu_book</span>
+<datalist id="departments">
+@if (ViewBag.BolumListesi != null)
+{
+    @foreach (var bol in (List<string>)ViewBag.BolumListesi)
+    {
+        <option value="@bol">@bol</option>
+    }
+}
+</datalist>
+</div>
+<span asp-validation-for="Bolum" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="Sinif">Sınıf *</label>
+<select asp-for="Sinif" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0 cursor-pointer text-gray-700" required>
+<option disabled selected value="">Seçiniz</option>
+<option value="Hazırlık">Hazırlık</option>
+<option value="1">1. Sınıf</option>
+<option value="2">2. Sınıf</option>
+<option value="3">3. Sınıf</option>
+<option value="4">4. Sınıf</option>
+</select>
+<span asp-validation-for="Sinif" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="NotOrtalamasi">GNO *</label>
+<input asp-for="NotOrtalamasi" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0 font-mono text-[#4A00E0] font-bold" max="4" min="0" placeholder="0.00" step="0.01" type="number" required />
+<span asp-validation-for="NotOrtalamasi" class="text-red-500 text-sm"></span>
+</div>
+</div>
+</div>
+<div class="section-divider"></div>
+<div>
+<h3 class="flex items-center gap-3 text-xl font-bold text-[#8E2DE2] mb-6">
+<span class="material-symbols-outlined bg-purple-100 p-2 rounded-lg shadow-sm">family_restroom</span>
+                        Aile Bilgileri
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="BabaMeslek">Baba Mesleği *</label>
+<input asp-for="BabaMeslek" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" placeholder="Baba mesleği" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="AnneMeslek">Anne Mesleği *</label>
+<input asp-for="AnneMeslek" class="w-full rounded-xl liquid-input h-12 px-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0" placeholder="Anne mesleği" type="text"/>
+</div>
+<div class="space-y-1 md:col-span-2">
+<label class="text-xs font-bold text-gray-500 uppercase tracking-wide ml-1" asp-for="AileGeliri">Ailenin Aylık Geliri *</label>
+<div class="relative">
+<span class="absolute left-4 top-3 text-gray-400 font-bold">₺</span>
+<input asp-for="AileGeliri" type="number" min="0" step="0.01" class="w-full rounded-xl liquid-input h-12 pl-10 pr-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0 cursor-pointer text-gray-700" placeholder="Örn: 55000" required />
+</div>
+<span asp-validation-for="AileGeliri" class="text-red-500 text-sm"></span>
+</div>
+</div>
+</div>
+<div class="section-divider"></div>
+<div>
+<h3 class="flex items-center gap-3 text-xl font-bold text-[#4A00E0] mb-6">
+<span class="material-symbols-outlined bg-purple-100 p-2 rounded-lg shadow-sm">psychology</span>
+                        Klasik Sorular
+                    </h3>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="text-sm font-bold text-gray-700 ml-1" asp-for="KlasikSoru1Cevap">Seni tanımak istiyoruz. Kişisel özelliklerin ve hobilerin neler?</label>
+<textarea asp-for="KlasikSoru1Cevap" class="w-full rounded-xl liquid-input ai-pattern-bg p-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0 resize-none transition-all duration-500" placeholder="Yazmaya başladığında arka planda desenler belirecek..." rows="4" required></textarea>
+<span asp-validation-for="KlasikSoru1Cevap" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-gray-700 ml-1" asp-for="KlasikSoru2Cevap">Kariyer hedeflerin ve gelecek planların neler?</label>
+<textarea asp-for="KlasikSoru2Cevap" class="w-full rounded-xl liquid-input ai-pattern-bg p-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0 resize-none transition-all duration-500" placeholder="Hayallerini anlat..." rows="4" required></textarea>
+<span asp-validation-for="KlasikSoru2Cevap" class="text-red-500 text-sm"></span>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-gray-700 ml-1" asp-for="KlasikSoru3Cevap">Neden bu bursa ihtiyacın var?</label>
+<textarea asp-for="KlasikSoru3Cevap" class="w-full rounded-xl liquid-input ai-pattern-bg p-4 shadow-sm text-base bg-white/50 backdrop-blur-sm focus:ring-0 resize-none transition-all duration-500" placeholder="Durumunu kısaca özetle..." rows="4" required></textarea>
+<span asp-validation-for="KlasikSoru3Cevap" class="text-red-500 text-sm"></span>
+</div>
+</div>
+</div>
+<div class="pt-8 mt-4 border-t border-white/40">
+<div class="p-6 bg-white/40 border border-white/60 rounded-2xl backdrop-blur-md shadow-sm mb-8">
+<label class="flex items-start gap-4 cursor-pointer group">
+<div class="relative flex items-center mt-0.5">
+<input class="peer h-6 w-6 cursor-pointer appearance-none rounded-lg border-2 border-gray-400 bg-white checked:bg-[#4A00E0] checked:border-transparent focus:ring-0 transition-all holo-checkbox" required="" type="checkbox"/>
+<span class="material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[18px] text-white opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
+</div>
+<span class="text-sm text-gray-700 font-medium leading-relaxed select-none">
+<a class="text-[#4A00E0] font-bold underline decoration-2 underline-offset-2 hover:text-[#8E2DE2]" href="#">KVKK Aydınlatma Metni</a>'ni okudum, anladım ve kişisel verilerimin işlenmesini kabul ediyorum. *
+                            </span>
+</label>
+</div>
+<div class="flex justify-center w-full">
+<button class="relative overflow-hidden w-full md:w-auto px-20 py-5 rounded-2xl bg-gradient-to-r from-[#4A00E0] via-[#8E2DE2] to-[#C06FEF] text-white font-black text-xl shadow-2xl shadow-purple-600/40 hover:shadow-purple-600/60 hover:-translate-y-1 transition-all duration-300 group" type="submit">
+<span class="relative z-10 flex items-center justify-center gap-3">
+                                BAŞVURU YAP
+                                <span class="material-symbols-outlined animate-bounce text-2xl">rocket_launch</span>
+</span>
+<div class="absolute inset-0 bg-white/30 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+</button>
+</div>
+</div>
+</form>
+</div>
+</main>
+<footer class="bg-black/20 backdrop-blur-md border-t border-white/10 py-6 mt-auto relative z-10 text-white">
+<div class="max-w-[1280px] mx-auto px-8 text-center text-white/70 text-sm font-medium">
+<p>© 2024 Öğrenci Burs Yönetim Sistemi. Gelecek seninle aydınlanacak.</p>
+</div>
+</footer>
 
-        // Bölüm Dropdown
-        (function() {
-            const input = document.getElementById('bolumInput');
-            const dropdown = document.getElementById('bolumDropdown');
-            const toggle = document.getElementById('bolumDropdownToggle');
-            const options = dropdown.querySelectorAll('.universite-option');
-            let currentHighlight = -1;
-            
-            toggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                dropdown.classList.toggle('show');
-                toggle.classList.toggle('rotated');
-            });
-            
-            input.addEventListener('focus', function() {
-                filterOptions();
-                dropdown.classList.add('show');
-                toggle.classList.add('rotated');
-            });
-            
-            input.addEventListener('input', function() {
-                filterOptions();
-                dropdown.classList.add('show');
-                toggle.classList.add('rotated');
-                currentHighlight = -1;
-            });
-            
-            options.forEach(function(option) {
-                option.addEventListener('click', function() {
-                    input.value = this.getAttribute('data-value');
-                    dropdown.classList.remove('show');
-                    toggle.classList.remove('rotated');
-                    input.focus();
-                });
-            });
-            
-            input.addEventListener('keydown', function(e) {
-                if (!dropdown.classList.contains('show')) {
-                    if (e.key === 'ArrowDown' || e.key === 'Enter') {
-                        e.preventDefault();
-                        filterOptions();
-                        dropdown.classList.add('show');
-                        toggle.classList.add('rotated');
-                        currentHighlight = 0;
-                        highlightOption(currentHighlight);
-                    }
-                    return;
-                }
-                
-                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
-                
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    currentHighlight = (currentHighlight + 1) % visibleOptions.length;
-                    highlightOption(currentHighlight);
-                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    currentHighlight = currentHighlight <= 0 ? visibleOptions.length - 1 : currentHighlight - 1;
-                    highlightOption(currentHighlight);
-                    visibleOptions[currentHighlight].scrollIntoView({ block: 'nearest' });
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (currentHighlight >= 0 && visibleOptions[currentHighlight]) {
-                        visibleOptions[currentHighlight].click();
-                    }
-                } else if (e.key === 'Escape') {
-                    dropdown.classList.remove('show');
-                    toggle.classList.remove('rotated');
-                    currentHighlight = -1;
-                }
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!input.contains(e.target) && !dropdown.contains(e.target) && !toggle.contains(e.target)) {
-                    dropdown.classList.remove('show');
-                    toggle.classList.remove('rotated');
-                    currentHighlight = -1;
-                }
-            });
-            
-            function filterOptions() {
-                const searchTerm = input.value.toLowerCase();
-                let visibleCount = 0;
-                
-                options.forEach(function(option) {
-                    const text = option.textContent.toLowerCase();
-                    if (text.includes(searchTerm)) {
-                        option.style.display = 'block';
-                        visibleCount++;
-                    } else {
-                        option.style.display = 'none';
-                    }
-                });
-                
-                if (visibleCount === 0 && searchTerm === '') {
-                    options.forEach(function(option) {
-                        option.style.display = 'block';
-                    });
-                }
-            }
-            
-            function highlightOption(index) {
-                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
-                visibleOptions.forEach(function(opt, i) {
-                    if (i === index) {
-                        opt.classList.add('highlight');
-                    } else {
-                        opt.classList.remove('highlight');
-                    }
-                });
-            }
-        })();
-
-        // Telefon Numarası Formatlama - Basit ve Güvenilir Versiyon
-        (function() {
-            const telefonInput = document.getElementById('telefonInput');
-            
-            if (telefonInput) {
-                function formatPhone(numbers) {
-                    if (!numbers || numbers.length === 0) return '';
-                    
-                    // Maksimum 11 rakam (zaten input event'inde kontrol ediliyor)
-                    let formatted = '';
-                    if (numbers.length > 0) {
-                        formatted = numbers.charAt(0); // 0
-                        if (numbers.length > 1) {
-                            formatted += ' (' + numbers.substring(1, Math.min(4, numbers.length)); // (5XX
-                            if (numbers.length > 4) {
-                                formatted += ') ' + numbers.substring(4, Math.min(7, numbers.length)); // ) XXX
-                                if (numbers.length > 7) {
-                                    formatted += ' ' + numbers.substring(7, Math.min(9, numbers.length)); // XX
-                                    if (numbers.length > 9) {
-                                        // Son 2 rakamı al (9. indeksten sonrası = 10. ve 11. rakamlar)
-                                        formatted += ' ' + numbers.substring(9, Math.min(11, numbers.length)); // XX
-                                    }
-                                }
-                            } else if (numbers.length > 1) {
-                                formatted += ')';
-                            }
-                        }
-                    }
-                    return formatted;
-                }
-                
-                function getDigitCountBeforePosition(value, position) {
-                    let count = 0;
-                    for (let i = 0; i < position && i < value.length; i++) {
-                        if (/\d/.test(value[i])) {
-                            count++;
-                        }
-                    }
-                    return count;
-                }
-                
-                function getPositionAfterDigitCount(formatted, digitCount) {
-                    let count = 0;
-                    for (let i = 0; i < formatted.length; i++) {
-                        if (/\d/.test(formatted[i])) {
-                            count++;
-                            if (count === digitCount) {
-                                return i + 1;
-                            }
-                        }
-                    }
-                    return formatted.length;
-                }
-                
-                telefonInput.addEventListener('input', function(e) {
-                    const oldValue = this.value;
-                    const oldCursor = this.selectionStart;
-                    
-                    // Sadece rakamları al
-                    let numbers = this.value.replace(/\D/g, '');
-                    
-                    // Maksimum 11 rakam (manuel kontrol)
-                    if (numbers.length > 11) {
-                        numbers = numbers.substring(0, 11);
-                    }
-                    
-                    // Formatla
-                    const formatted = formatPhone(numbers);
-                    this.value = formatted;
-                    
-                    // Cursor pozisyonunu ayarla
-                    const digitsBeforeCursor = getDigitCountBeforePosition(oldValue, oldCursor);
-                    let newCursor = getPositionAfterDigitCount(formatted, digitsBeforeCursor);
-                    
-                    // Eğer yeni rakam eklendiyse, cursor'ü bir sonraki pozisyona al
-                    const oldNumbers = oldValue.replace(/\D/g, '');
-                    if (numbers.length > oldNumbers.length) {
-                        newCursor = getPositionAfterDigitCount(formatted, numbers.length);
-                    }
-                    
-                    this.setSelectionRange(newCursor, newCursor);
-                });
-                
-                telefonInput.addEventListener('keydown', function(e) {
-                    const cursorPos = this.selectionStart;
-                    const value = this.value;
-                    const numbers = value.replace(/\D/g, '');
-                    
-                    // Backspace tuşu
-                    if (e.key === 'Backspace') {
-                        const digitsBeforeCursor = getDigitCountBeforePosition(value, cursorPos);
-                        
-                        // Eğer format karakterindeyse veya rakam varsa
-                        if (cursorPos > 0 && digitsBeforeCursor > 0) {
-                            // Önceki rakamı sil
-                            const newNumbers = numbers.substring(0, digitsBeforeCursor - 1) + numbers.substring(digitsBeforeCursor);
-                            const formatted = formatPhone(newNumbers);
-                            this.value = formatted;
-                            
-                            // Cursor'ü ayarla
-                            const newCursor = getPositionAfterDigitCount(formatted, digitsBeforeCursor - 1);
-                            this.setSelectionRange(newCursor, newCursor);
-                            e.preventDefault();
-                        }
-                    }
-                    
-                    // Delete tuşu
-                    if (e.key === 'Delete') {
-                        const digitsBeforeCursor = getDigitCountBeforePosition(value, cursorPos);
-                        
-                        // Eğer rakam varsa
-                        if (digitsBeforeCursor < numbers.length) {
-                            // Sonraki rakamı sil
-                            const newNumbers = numbers.substring(0, digitsBeforeCursor) + numbers.substring(digitsBeforeCursor + 1);
-                            const formatted = formatPhone(newNumbers);
-                            this.value = formatted;
-                            
-                            // Cursor'ü ayarla
-                            const newCursor = getPositionAfterDigitCount(formatted, digitsBeforeCursor);
-                            this.setSelectionRange(newCursor, newCursor);
-                            e.preventDefault();
-                        }
-                    }
-                    
-                    // Sadece rakam, backspace, delete, tab, arrow keys ve home/end tuşlarına izin ver
-                    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
-                    const isNumber = (e.key >= '0' && e.key <= '9');
-                    const isAllowed = allowedKeys.includes(e.key) || (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase()));
-                    
-                    if (!isNumber && !isAllowed) {
-                        e.preventDefault();
-                    }
-                });
-                
-                telefonInput.addEventListener('paste', function(e) {
-                    e.preventDefault();
-                    const pastedText = (e.clipboardData || window.clipboardData).getData('text');
-                    const numbers = pastedText.replace(/\D/g, '').substring(0, 11);
-                    const formatted = formatPhone(numbers);
-                    this.value = formatted;
-                    this.setSelectionRange(formatted.length, formatted.length);
-                });
-            }
-        })();
-    </script>
-</body>
-</html>
-
+</body></html>

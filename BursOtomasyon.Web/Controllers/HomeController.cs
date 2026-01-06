@@ -35,6 +35,13 @@ namespace BursOtomasyon.Web.Controllers
             // Bölüm listesini yükle
             ViewBag.BolumListesi = GetBolumListesi();
             
+            // TempData'dan başarı mesajını al (redirect sonrası)
+            if (TempData["Success"] != null)
+            {
+                ViewBag.Success = TempData["Success"];
+                ViewBag.Message = TempData["Message"];
+            }
+            
             return View();
         }
 
@@ -422,8 +429,11 @@ namespace BursOtomasyon.Web.Controllers
                         
                         if (basvuruEklendi)
                         {
-                            ViewBag.Success = true;
-                            ViewBag.Message = "Başvurunuz başarıyla alındı! Başvurunuz değerlendirme sürecine alınmıştır.";
+                            // TempData kullanarak başarı mesajını gönder (redirect sonrası da kalır)
+                            TempData["Success"] = true;
+                            TempData["Message"] = "Başvurunuz başarıyla alındı! Başvurunuz değerlendirme sürecine alınmıştır.";
+                            // Formu temizlemek için redirect yap
+                            return RedirectToAction("BasvuruYap");
                         }
                         else
                         {
@@ -472,6 +482,30 @@ namespace BursOtomasyon.Web.Controllers
                 ViewBag.Error = "Bir hata oluştu: " + ex.Message;
                 return View("Index");
             }
+        }
+
+        [HttpGet]
+        public IActionResult Burslar()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Hakkimizda()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Iletisim()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Giris()
+        {
+            return View();
         }
     }
 }
